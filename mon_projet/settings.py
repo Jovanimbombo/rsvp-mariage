@@ -113,6 +113,7 @@ USE_I18N = True
 USE_TZ = True
 
 SESSION_COOKIE_AGE = 21600
+CSRF_TRUSTED_ORIGINS = ['https://rsvp-mariage-production.up.railway.app']
 
 
 # Static files (CSS, JavaScript, Images)
