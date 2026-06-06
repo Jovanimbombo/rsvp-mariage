@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Merci — {{ invite.prenom }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --noir: #080c10; --bleu-nuit: #0a1628; --bleu-ciel: #5baee3;
+      --bleu-clair: #a8d4f0; --or: #c9a84c; --or-clair: #e8cf8a;
+      --blanc: #f7f4ef;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100dvh;
+      background: var(--noir);
+      background-image: radial-gradient(ellipse at 50% 40%, rgba(91,174,227,.07) 0%, transparent 60%);
+      font-family: 'Jost', sans-serif;
+      color: var(--blanc);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    /* Icône centrale animée */
+    .icone-centrale {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      animation: zoomIn .7s cubic-bezier(.22,.68,0,1.4) both;
+    }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(.4); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .trait-or {
+      display: block;
+      width: 50px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--or), transparent);
+      margin: .7rem auto 1rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1.6rem, 6vw, 2.2rem);
+      letter-spacing: .04em;
+      animation: fadeUp .7s ease .2s both;
+    }
+    h1 em { font-style: italic; color: var(--bleu-clair); }
+
+    .sous-titre {
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(168,212,240,.5);
+      margin-top: .5rem;
+      animation: fadeUp .7s ease .35s both;
+    }
+
+    /* Récapitulatif */
+    .recap {
+      margin-top: 2rem;
+      background: linear-gradient(160deg, #0d2040 0%, #060e1a 100%);
+      border: 1px solid rgba(91,174,227,.2);
+      border-radius: 6px;
+      padding: 1.6rem 2rem;
+      width: 100%;
+      max-width: 340px;
+      animation: fadeUp .7s ease .5s both;
+    }
+    .recap-ligne {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .5rem 0;
+      border-bottom: 1px solid rgba(91,174,227,.08);
+      font-size: .82rem;
+    }
+    .recap-ligne:last-child { border-bottom: none; }
+    .recap-ligne .label { color: rgba(168,212,240,.55); font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; }
+    .recap-ligne .valeur { font-family: 'Cormorant Garamond', serif; font-size: .95rem; }
+    .valeur.present { color: #6be08a; }
+    .valeur.absent  { color: #e06b7a; }
+
+    /* Bouton modifier */
+    .btn-modifier {
+      display: inline-block;
+      margin-top: 1.8rem;
+      padding: .8rem 2rem;
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--bleu-clair);
+      border: 1px solid rgba(91,174,227,.3);
+      border-radius: 3px;
+      text-decoration: none;
+      transition: all .2s ease;
+      animation: fadeUp .7s ease .65s both;
+    }
+    .btn-modifier:hover { background: rgba(91,174,227,.08); border-color: rgba(91,174,227,.6); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="icone-centrale">
+    {% if invite.statut_presence == 'present' %}🎉{% else %}💌{% endif %}
+  </div>
+
+  <h1>
+    {% if invite.statut_presence == 'present' %}
+      À très bientôt,<br><em>{{ invite.prenom }} !</em>
+    {% else %}
+      Nous vous regretterons,<br><em>{{ invite.prenom }}.</em>
+    {% endif %}
+  </h1>
+
+  <span class="trait-or"></span>
+  <p class="sous-titre">Votre réponse a été enregistrée</p>
+
+  <div class="recap">
+    <div class="recap-ligne">
+      <span class="label">Invité</span>
+      <span class="valeur">{{ invite.prenom }} {{ invite.nom }}</span>
+    </div>
+    <div class="recap-ligne">
+      <span class="label">Présence</span>
+      <span class="valeur {{ invite.statut_presence }}">
+        {% if invite.statut_presence == 'present' %}✅ Présent(e){% else %}❌ Absent(e){% endif %}
+      </span>
+    </div>
+    {% if invite.choix_boisson %}
+    <div class="recap-ligne">
+      <span class="label">Boisson</span>
+      <span class="valeur">{{ invite.get_choix_boisson_display }}</span>
+    </div>
+    {% endif %}
+    {% if invite.date_reponse %}
+    <div class="recap-ligne">
+      <span class="label">Répondu le</span>
+      <span class="valeur">{{ invite.date_reponse|date:"d/m/Y à H:i" }}</span>
+    </div>
+    {% endif %}
+  </div>
+
+  <a href="{% url 'rsvp' %}" class="btn-modifier">Modifier ma réponse</a>
+
+</body>
+</html>
