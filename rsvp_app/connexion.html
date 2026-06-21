@@ -1,711 +1,826 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Invitation — Votre Présence est Souhaitée</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap"
-    rel="stylesheet"
-  />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Eva & Gloria — Mariage 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ══════════════════════════════════════════════════════
-       VARIABLES & RESET
-    ══════════════════════════════════════════════════════ */
     :root {
-      --noir:       #080c10;
-      --bleu-nuit:  #0a1628;
-      --bleu-ciel:  #5baee3;
-      --bleu-clair: #a8d4f0;
-      --or:         #c9a84c;
-      --or-clair:   #e8cf8a;
-      --blanc:      #f7f4ef;
-      --blanc-pur:  #ffffff;
-
-      /* Dimensions de l'enveloppe */
-      --env-w: min(360px, 90vw);
-      --env-h: calc(var(--env-w) * 0.68);
-      --flap-h: calc(var(--env-w) * 0.42);
-
-      /* Timings des animations */
-      --t-flap:  0.8s;
-      --t-card:  0.7s;
-      --t-delay: 0.5s;
+      --creme:      #fdf8f0;
+      --creme-2:    #f5ede0;
+      --or:         #b8924a;
+      --or-clair:   #d4ac6e;
+      --or-pale:    #ecdfc8;
+      --brun:       #2c1f0e;
+      --brun-doux:  #5c4a32;
+      --texte:      #3a2e22;
+      --texte-doux: #7a6a56;
+      --blanc:      #ffffff;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      height: 100%;
-      overflow: hidden; /* on cachera le scroll pendant l'animation */
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      background: var(--noir);
+      background: var(--creme);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--texte);
+      max-width: 480px;
+      margin: 0 auto;
+      overflow-x: hidden;
+    }
+
+    /* ── ANIMATIONS SCROLL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .12s; }
+    .reveal-delay-2 { transition-delay: .24s; }
+    .reveal-delay-3 { transition-delay: .36s; }
+    .reveal-delay-4 { transition-delay: .48s; }
+
+    /* ════════════════════════════════════════
+       HERO — Photo plein écran
+    ════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100dvh;
-      font-family: 'Jost', sans-serif;
-      color: var(--blanc);
-
-      /* Fond étoilé via CSS pur */
-      background-image:
-        radial-gradient(ellipse at 20% 30%, rgba(91,174,227,.08) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 70%, rgba(201,168,76,.06) 0%, transparent 55%);
+      justify-content: flex-end;
+      padding-bottom: 3rem;
     }
 
-    /* ══════════════════════════════════════════════════════
-       SCINTILLEMENT DE FOND (particules dorées légères)
-    ══════════════════════════════════════════════════════ */
-    .stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-    .stars span {
-      position: absolute;
-      border-radius: 50%;
-      background: var(--or-clair);
-      opacity: 0;
-      animation: scintille var(--dur) ease-in-out infinite var(--delay);
-    }
-    @keyframes scintille {
-      0%, 100% { opacity: 0; transform: scale(.6); }
-      50%       { opacity: .5; transform: scale(1); }
-    }
-
-    /* ══════════════════════════════════════════════════════
-       TITRE HAUT DE PAGE
-    ══════════════════════════════════════════════════════ */
-    .titre-page {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      margin-bottom: 2.5rem;
-      animation: fadeDown .8s ease both;
-    }
-    .titre-page h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: clamp(1.4rem, 5vw, 2rem);
-      letter-spacing: .18em;
-      color: var(--blanc);
-      text-transform: uppercase;
-    }
-    .titre-page .trait-or {
-      display: block;
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--or), transparent);
-      margin: .6rem auto;
-    }
-    .titre-page p {
-      font-size: .75rem;
-      letter-spacing: .22em;
-      color: var(--bleu-clair);
-      text-transform: uppercase;
-    }
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ══════════════════════════════════════════════════════
-       CONTENEUR PRINCIPAL DE L'ENVELOPPE
-       perspective: nécessaire pour l'effet 3D du rabat
-    ══════════════════════════════════════════════════════ */
-    .scene {
-      position: relative;
-      z-index: 2;
-      width: var(--env-w);
-      /* perspective 3D appliquée ici pour que le rabat pivote en profondeur */
-      perspective: 1200px;
-      perspective-origin: 50% 0%;
-    }
-
-    /* ══════════════════════════════════════════════════════
-       CORPS DE L'ENVELOPPE
-    ══════════════════════════════════════════════════════ */
-    .enveloppe {
-      position: relative;
-      width: var(--env-w);
-      height: var(--env-h);
-      cursor: pointer;
-      /* Ombre portée luxueuse */
-      filter: drop-shadow(0 30px 60px rgba(91,174,227,.25))
-              drop-shadow(0 8px 20px rgba(0,0,0,.6));
-    }
-
-    /* — Corps (rectangle principal) — */
-    .env-corps {
+    .hero-photo {
       position: absolute;
       inset: 0;
-      border-radius: 4px 4px 6px 6px;
-      /* Dégradé bleu nuit → noir pour le dos de l'enveloppe */
-      background: linear-gradient(170deg, #0d2040 0%, #060e1a 100%);
-      border: 1px solid rgba(91,174,227,.3);
-      overflow: hidden;
-    }
-
-    /* Plis de l'enveloppe (lignes diagonales en bas) */
-    .env-corps::before,
-    .env-corps::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      width: 0;
-      height: 0;
-    }
-    /* Triangle bas-gauche */
-    .env-corps::before {
-      left: 0;
-      border-style: solid;
-      border-width: 0 0 calc(var(--env-h) * .55) calc(var(--env-w) * .5);
-      border-color: transparent transparent rgba(91,174,227,.12) transparent;
-    }
-    /* Triangle bas-droit */
-    .env-corps::after {
-      right: 0;
-      border-style: solid;
-      border-width: 0 calc(var(--env-w) * .5) calc(var(--env-h) * .55) 0;
-      border-color: transparent rgba(91,174,227,.08) transparent transparent;
-    }
-
-    /* Ligne dorée décorative en bas de l'enveloppe */
-    .env-bord-bas {
-      position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent 5%, var(--or) 40%, var(--or-clair) 50%, var(--or) 60%, transparent 95%);
-    }
-
-    /* ══════════════════════════════════════════════════════
-       RABAT SUPÉRIEUR (la partie qui s'ouvre)
-       transform-origin en haut → pivot vers le haut
-    ══════════════════════════════════════════════════════ */
-    .env-rabat {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
-      height: var(--flap-h);
-      /* transform-origin : le rabat pivote depuis son bord supérieur */
-      transform-origin: top center;
-      /* transition 3D : ease-in pour l'accélération en début d'ouverture */
-      transition: transform var(--t-flap) cubic-bezier(.4,0,.2,1);
-      /* z-index élevé pour passer devant la carte au début */
-      z-index: 10;
-      /* Préserve l'espace 3D pour l'effet de volume */
-      transform-style: preserve-3d;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
     }
 
-    /* Forme triangulaire du rabat via clip-path */
-    .env-rabat-face {
+    .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(185deg, #0f2645 0%, #091830 60%, #0d2040 100%);
-      clip-path: polygon(0% 0%, 100% 0%, 50% 90%);
-      border-top: 1px solid rgba(91,174,227,.4);
+      background: linear-gradient(
+        to bottom,
+        rgba(253,248,240,0)   0%,
+        rgba(253,248,240,0)   40%,
+        rgba(253,248,240,.65) 68%,
+        rgba(253,248,240,.97) 90%,
+        rgba(253,248,240,1)   100%
+      );
     }
 
-    /* Reflet lumineux subtil sur le rabat */
-    .env-rabat-face::after {
-      content: '';
-      position: absolute;
-      top: 5%;
-      left: 15%;
-      width: 70%;
-      height: 50%;
-      background: radial-gradient(ellipse at 50% 20%, rgba(91,174,227,.12) 0%, transparent 70%);
-      clip-path: polygon(0% 0%, 100% 0%, 50% 90%);
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 2rem;
+      width: 100%;
     }
 
-    /* ══════════════════════════════════════════════════════
-       ÉTAT OUVERT DU RABAT
-       rotateX(-180deg) → bascule en arrière sur l'axe X
-    ══════════════════════════════════════════════════════ */
-    .scene.ouvert .env-rabat {
-      transform: rotateX(-180deg);
+    .hero-label {
+      display: inline-block;
+      font-size: .55rem;
+      font-weight: 500;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: .9rem;
+      padding: .3rem 1rem;
+      border: 1px solid rgba(184,146,74,.35);
+      border-radius: 20px;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(6px);
     }
 
-    /* ══════════════════════════════════════════════════════
-       SCEAU CENTRAL (le clic se fait ici)
-    ══════════════════════════════════════════════════════ */
-    .env-sceau {
-      position: absolute;
-      /* Centré horizontalement, positionné à la jonction rabat/corps */
-      left: 50%;
-      top: calc(var(--flap-h) - 28px);
-      transform: translateX(-50%);
-      z-index: 20;
-
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, var(--or-clair), var(--or) 60%, #8c6e2a);
-      border: 2px solid rgba(255,255,255,.2);
-      box-shadow:
-        0 0 0 3px rgba(201,168,76,.3),
-        0 4px 16px rgba(0,0,0,.6),
-        inset 0 1px 2px rgba(255,255,255,.3);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      /* Micro-animation de pulsation pour attirer l'attention */
-      animation: pulse-sceau 2.5s ease-in-out infinite;
-      transition: transform .15s ease, box-shadow .15s ease;
+    .hero-names {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 13vw, 4.2rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.05;
+      color: var(--brun);
     }
-    .env-sceau:hover {
-      transform: translateX(-50%) scale(1.08);
-      box-shadow:
-        0 0 0 5px rgba(201,168,76,.4),
-        0 6px 24px rgba(0,0,0,.7),
-        inset 0 1px 2px rgba(255,255,255,.3);
-    }
-    .env-sceau:active {
-      transform: translateX(-50%) scale(.96);
-    }
-
-    /* Monogramme dans le sceau */
-    .env-sceau svg {
-      width: 30px;
-      height: 30px;
-      fill: var(--noir);
-      opacity: .85;
-    }
-
-    @keyframes pulse-sceau {
-      0%, 100% { box-shadow: 0 0 0 3px rgba(201,168,76,.3), 0 4px 16px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,255,255,.3); }
-      50%       { box-shadow: 0 0 0 8px rgba(201,168,76,.15), 0 4px 20px rgba(201,168,76,.3), inset 0 1px 2px rgba(255,255,255,.3); }
-    }
-
-    /* Masque le sceau quand l'enveloppe est ouverte */
-    .scene.ouvert .env-sceau {
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s ease;
-    }
-
-    /* ══════════════════════════════════════════════════════
-       CARTE D'INVITATION (contient le formulaire)
-       Initialement cachée DANS l'enveloppe (translateY(0) = au fond)
-    ══════════════════════════════════════════════════════ */
-    .carte {
-      position: absolute;
-      /* La carte démarre cachée dans l'enveloppe */
-      bottom: 8px;
-      left: 50%;
-      transform: translateX(-50%) translateY(0);
-      width: calc(var(--env-w) - 20px);
-      /* Hauteur auto pour s'adapter au contenu */
-      background: linear-gradient(160deg, var(--blanc) 0%, #eef4fa 100%);
-      border-radius: 3px;
-      padding: 2rem 1.6rem 1.8rem;
-      color: var(--bleu-nuit);
-      z-index: 5;
-      /* La transition de sortie est retardée après l'ouverture du rabat */
-      transition: transform var(--t-card) cubic-bezier(.22,.68,0,1.2) var(--t-delay);
-      /* Ombre portée sur la carte */
-      box-shadow: 0 -4px 30px rgba(91,174,227,.2), 0 2px 10px rgba(0,0,0,.3);
-    }
-
-    /* ══════════════════════════════════════════════════════
-       ÉTAT OUVERT : la carte glisse vers le haut
-       translateY négatif = remonte hors de l'enveloppe
-    ══════════════════════════════════════════════════════ */
-    .scene.ouvert .carte {
-      /* La carte sort entièrement au-dessus de l'enveloppe */
-      transform: translateX(-50%) translateY(calc(-100% - var(--env-h) + 30px));
-    }
-
-    /* Décoration haut de la carte : ligne or */
-    .carte::before {
-      content: '';
+    .hero-names .ampersand {
       display: block;
-      width: 50px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .42em;
+      font-style: normal;
+      letter-spacing: .18em;
+      color: var(--or);
+      margin: .2em 0;
+    }
+
+    .trait-or {
+      display: block;
+      width: 44px;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--or), transparent);
-      margin: 0 auto 1.2rem;
+      margin: 1rem auto;
     }
 
-    /* En-tête de la carte */
-    .carte-header {
-      text-align: center;
-      margin-bottom: 1.4rem;
-    }
-    .carte-header h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 400;
-      font-size: 1.3rem;
-      letter-spacing: .08em;
-      color: var(--bleu-nuit);
-      line-height: 1.3;
-    }
-    .carte-header p {
-      font-size: .7rem;
-      letter-spacing: .2em;
+    .hero-date {
+      font-size: .62rem;
+      letter-spacing: .22em;
       text-transform: uppercase;
-      color: var(--bleu-ciel);
-      margin-top: .35rem;
+      color: var(--brun-doux);
+      font-weight: 400;
     }
 
-    /* ══════════════════════════════════════════════════════
-       CHAMPS DU FORMULAIRE
-       Style "ligne seule" (underline input)
-    ══════════════════════════════════════════════════════ */
+    .scroll-hint {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .35rem;
+      opacity: .45;
+    }
+    .scroll-hint span {
+      font-size: .48rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--brun-doux);
+    }
+    .scroll-line {
+      width: 1px; height: 30px;
+      background: linear-gradient(to bottom, var(--or), transparent);
+      animation: pulse-line 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-line {
+      0%,100% { opacity:.3; transform:scaleY(.6); transform-origin:top; }
+      50%      { opacity:1;  transform:scaleY(1);  transform-origin:top; }
+    }
+
+    /* ════════════════════════════════════════
+       FORMULAIRE DE CONNEXION DJANGO
+    ════════════════════════════════════════ */
+    .login-section {
+      padding: 3.5rem 2rem 4rem;
+      border-top: 1px solid var(--or-pale);
+      text-align: center;
+    }
+
+    .login-section-label {
+      display: block;
+      font-size: .52rem;
+      font-weight: 500;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: .5rem;
+    }
+
+    .login-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--brun);
+      margin-bottom: .4rem;
+    }
+
+    .login-section-sub {
+      font-size: .68rem;
+      color: var(--texte-doux);
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    /* Champs */
     .champ {
       position: relative;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.6rem;
+      text-align: left;
     }
     .champ label {
       display: block;
-      font-size: .65rem;
-      letter-spacing: .18em;
+      font-size: .55rem;
+      letter-spacing: .22em;
       text-transform: uppercase;
-      color: var(--bleu-ciel);
-      margin-bottom: .3rem;
+      color: var(--or);
+      margin-bottom: .4rem;
     }
     .champ input {
       width: 100%;
       background: transparent;
       border: none;
-      border-bottom: 1px solid rgba(10,22,40,.25);
-      padding: .5rem 0 .4rem;
+      border-bottom: 1px solid rgba(44,31,14,.2);
+      padding: .55rem 0 .4rem;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      color: var(--bleu-nuit);
+      font-size: 1.1rem;
+      color: var(--brun);
       outline: none;
       transition: border-color .25s ease;
     }
     .champ input::placeholder {
-      color: rgba(10,22,40,.3);
+      color: rgba(44,31,14,.25);
       font-style: italic;
-      font-size: .95rem;
     }
-    /* Ligne qui s'anime au focus */
     .champ::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 50%;
+      bottom: 0; left: 50%;
       transform: translateX(-50%);
-      width: 0;
-      height: 1.5px;
-      background: linear-gradient(90deg, var(--bleu-ciel), var(--or));
+      width: 0; height: 1.5px;
+      background: linear-gradient(90deg, var(--or-clair), var(--or));
       transition: width .3s ease;
     }
-    .champ:focus-within::after {
-      width: 100%;
-    }
+    .champ:focus-within::after { width: 100%; }
 
-    /* ══════════════════════════════════════════════════════
-       BOUTON DE VALIDATION
-       Large, facile à presser avec le pouce
-    ══════════════════════════════════════════════════════ */
+    /* Bouton valider */
     .btn-valider {
       display: block;
       width: 100%;
-      padding: 1rem;
-      margin-top: 1.8rem;
-      background: linear-gradient(135deg, #1a3a6b 0%, #0d2040 100%);
-      color: var(--blanc);
-      font-family: 'Jost', sans-serif;
-      font-size: .8rem;
+      padding: 1.1rem;
+      margin-top: 2rem;
+      background: linear-gradient(135deg, var(--brun) 0%, var(--brun-doux) 100%);
+      color: var(--creme);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .68rem;
       font-weight: 500;
-      letter-spacing: .25em;
+      letter-spacing: .28em;
       text-transform: uppercase;
-      border: 1px solid rgba(91,174,227,.35);
+      border: 1px solid rgba(184,146,74,.3);
       border-radius: 2px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: transform .15s ease, box-shadow .15s ease;
-      /* Taille minimum pour l'accessibilité tactile */
-      min-height: 52px;
+      transition: transform .15s ease, box-shadow .2s ease;
+      min-height: 54px;
+      box-shadow: 0 8px 28px rgba(44,31,14,.18);
     }
     .btn-valider::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(91,174,227,.15) 0%, transparent 60%);
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(212,172,110,.15) 0%, transparent 60%);
       opacity: 0;
       transition: opacity .25s ease;
     }
     .btn-valider:hover::before { opacity: 1; }
-    .btn-valider:active {
-      transform: scale(.98);
-      box-shadow: inset 0 2px 8px rgba(0,0,0,.3);
+    .btn-valider:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 36px rgba(44,31,14,.25);
     }
+    .btn-valider:active { transform: scale(.98); }
 
-    /* ══════════════════════════════════════════════════════
-       MESSAGES D'ERREUR
-    ══════════════════════════════════════════════════════ */
+    /* Messages d'erreur Django */
     .messages-erreur {
-      background: rgba(220,53,69,.1);
-      border: 1px solid rgba(220,53,69,.3);
-      border-radius: 3px;
-      padding: .7rem .9rem;
-      margin-bottom: 1rem;
-      font-size: .8rem;
-      color: #e56b76;
+      background: rgba(180,60,60,.08);
+      border: 1px solid rgba(180,60,60,.25);
+      border-radius: 4px;
+      padding: .7rem 1rem;
+      margin-bottom: 1.2rem;
+      font-size: .75rem;
+      color: #a03030;
       text-align: center;
+      line-height: 1.5;
     }
 
-    /* ══════════════════════════════════════════════════════
-       INDICATEUR "CLIQUEZ SUR LE SCEAU"
-    ══════════════════════════════════════════════════════ */
-    .hint {
-      position: relative;
-      z-index: 2;
-      margin-top: 2.5rem;
+    /* ════════════════════════════════════════
+       COMPTE À REBOURS
+    ════════════════════════════════════════ */
+    .countdown-section {
+      padding: 3.5rem 2rem;
+      background: var(--brun);
       text-align: center;
-      font-size: .68rem;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: rgba(168,212,240,.5);
-      animation: fadeUp .8s ease .4s both;
+      border-top: 1px solid rgba(184,146,74,.2);
     }
-    .hint .fleche {
+    .cd-label {
       display: block;
-      font-size: 1.1rem;
-      animation: bounce .9s ease-in-out infinite;
+      font-size: .52rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--or-clair);
+      margin-bottom: .45rem;
+    }
+    .cd-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--creme);
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+    .cd-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: .7rem;
+    }
+    .cd-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(212,172,110,.2);
+      border-radius: 4px;
+      padding: 1rem .3rem .75rem;
+    }
+    .cd-num {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--or-clair);
+      line-height: 1;
+    }
+    .cd-unit {
+      display: block;
+      font-size: .47rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(253,248,240,.38);
+      margin-top: .3rem;
+    }
+
+    /* ════════════════════════════════════════
+       CALENDRIER
+    ════════════════════════════════════════ */
+    .cal-section {
+      padding: 4rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--or-pale);
+    }
+    .section-label {
+      display: block;
+      font-size: .52rem;
+      font-weight: 500;
+      letter-spacing: .38em;
+      text-transform: uppercase;
       color: var(--or);
-      margin-bottom: .3rem;
+      margin-bottom: .5rem;
     }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-5px); }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 7vw, 2rem);
+      font-weight: 400;
+      color: var(--brun);
+      line-height: 1.2;
+      margin-bottom: 1.6rem;
     }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7,1fr);
+      gap: .15rem;
+      max-width: 290px;
+      margin: 1.6rem auto 0;
     }
-    /* Cache le hint une fois ouvert */
-    .scene.ouvert ~ .hint {
-      opacity: 0;
-      pointer-events: none;
+    .cal-dn {
+      font-size: .48rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--or);
+      text-align: center;
+      padding: .25rem 0;
+    }
+    .cal-d {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .68rem;
+      color: var(--texte-doux);
+      border-radius: 50%;
+    }
+    .cal-d.vide { opacity: 0; pointer-events: none; }
+    .cal-d.special {
+      background: var(--or);
+      color: var(--blanc);
+      font-family: 'Playfair Display', serif;
+      font-size: .85rem;
+      font-weight: 500;
+      box-shadow: 0 4px 16px rgba(184,146,74,.45);
     }
 
-    /* ══════════════════════════════════════════════════════
-       RESPONSIVE — AJUSTEMENTS MOBILES
-    ══════════════════════════════════════════════════════ */
-    @media (max-width: 768px) {
-      .titre-page h1 { font-size: 1.25rem; }
-      .titre-page { margin-bottom: 1.8rem; }
-      .carte { padding: 1.6rem 1.2rem 1.4rem; }
-      .carte-header h2 { font-size: 1.15rem; }
+    /* ════════════════════════════════════════
+       PROGRAMME TIMELINE
+    ════════════════════════════════════════ */
+    .section {
+      padding: 4rem 2rem;
+      border-top: 1px solid var(--or-pale);
+    }
+    .timeline {
+      position: relative;
+      padding-left: 1.8rem;
+      margin-top: 1.8rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 6px; bottom: 6px;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--or-pale) 15%, var(--or-pale) 85%, transparent);
+    }
+    .tl-item { position: relative; padding-bottom: 2rem; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      position: absolute;
+      left: -1.8rem; top: .3rem;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--or);
+      border: 2px solid var(--creme);
+      box-shadow: 0 0 0 1px var(--or-pale);
+      transform: translateX(calc(-50% + .5px));
+    }
+    .tl-time {
+      font-size: .55rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: .18rem;
+    }
+    .tl-event {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--brun);
+      margin-bottom: .15rem;
+    }
+    .tl-lieu {
+      font-size: .68rem;
+      color: var(--texte-doux);
+      font-weight: 300;
     }
 
-    @media (max-width: 375px) {
-      :root {
-        --env-w: 88vw;
-      }
-      .carte { padding: 1.4rem 1rem 1.2rem; }
+    /* ════════════════════════════════════════
+       LIEU
+    ════════════════════════════════════════ */
+    .lieu-section {
+      padding: 4rem 2rem;
+      background: var(--creme-2);
+      border-top: 1px solid var(--or-pale);
+      text-align: center;
+    }
+    .lieu-icone { font-size: 1.8rem; margin-bottom: .8rem; display: block; }
+    .lieu-nom {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-style: italic;
+      color: var(--brun);
+      margin-bottom: .5rem;
+      line-height: 1.2;
+    }
+    .lieu-adresse {
+      font-size: .7rem;
+      color: var(--texte-doux);
+      line-height: 1.7;
+      margin-bottom: 1.6rem;
+      font-weight: 300;
     }
 
-    /* Gestion du safe-area iPhone (encoche/barre de navigation) */
+    /* ════════════════════════════════════════
+       RSVP
+    ════════════════════════════════════════ */
+    .rsvp-section {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: var(--brun);
+    }
+    .rsvp-label {
+      display: block;
+      font-size: .52rem;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: var(--or-clair);
+      margin-bottom: .6rem;
+    }
+    .rsvp-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 9vw, 2.8rem);
+      font-style: italic;
+      color: var(--creme);
+      margin-bottom: .9rem;
+      line-height: 1.1;
+      font-weight: 400;
+    }
+    .rsvp-deadline {
+      display: inline-block;
+      font-size: .55rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--or);
+      border: 1px solid rgba(184,146,74,.3);
+      padding: .38rem .9rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+    }
+    .rsvp-text {
+      font-size: .73rem;
+      color: rgba(253,248,240,.52);
+      font-weight: 300;
+      line-height: 1.85;
+      margin-bottom: 2.4rem;
+      max-width: 270px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .btn-rsvp {
+      display: inline-block;
+      padding: 1.1rem 3rem;
+      background: linear-gradient(135deg, var(--or-clair), var(--or));
+      color: var(--blanc);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .68rem;
+      font-weight: 500;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      box-shadow: 0 8px 32px rgba(184,146,74,.35);
+      transition: transform .2s ease, box-shadow .2s ease;
+      min-width: 220px;
+      cursor: pointer;
+    }
+    .btn-rsvp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(184,146,74,.5);
+    }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    footer {
+      padding: 2.4rem 2rem;
+      text-align: center;
+      background: #1a120a;
+    }
+    .footer-names {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--or-pale);
+      margin-bottom: .35rem;
+    }
+    .footer-date {
+      font-size: .52rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(236,223,200,.3);
+    }
+
+    @media (max-width: 360px) {
+      .cd-num { font-size: 1.6rem; }
+    }
     @supports (padding: max(0px)) {
-      body {
-        padding-bottom: max(1rem, env(safe-area-inset-bottom));
-        padding-top: max(1rem, env(safe-area-inset-top));
-      }
-    }
-
-    /* ══════════════════════════════════════════════════════
-       ANIMATION D'ENTRÉE DE LA SCÈNE
-    ══════════════════════════════════════════════════════ */
-    .scene {
-      animation: fadeUp .9s cubic-bezier(.22,.68,0,1.2) .15s both;
+      body { padding-bottom: env(safe-area-inset-bottom); }
     }
   </style>
 </head>
-
 <body>
 
-<!-- Fond étoilé : particules dorées générées en JS -->
-<div class="stars" id="stars"></div>
+<!-- ════════════════════════════════════════
+     HERO — PHOTO PLEINE PAGE
+════════════════════════════════════════ -->
+<section class="hero">
+  <!--
+    ╔══════════════════════════════════════════╗
+    ║  REMPLACE src="" PAR L'URL DE TA PHOTO  ║
+    ╚══════════════════════════════════════════╝
+  -->
+  <img
+    src="https://i.imgur.com/vrtCuPh.jpeg"
+    alt="Eva & Gloria"
+    class="hero-photo"
+  />
+  <div class="hero-overlay"></div>
 
-<!-- ── Titre ── -->
-<div class="titre-page">
-  <h1>Votre Invitation</h1>
-  <span class="trait-or"></span>
-  <p>Mariage &nbsp;·&nbsp; Veuillez vous identifier</p>
+  <div class="hero-content">
+    <span class="hero-label">Save the Date</span>
+    <h1 class="hero-names">
+      Eva
+      <span class="ampersand">&amp;</span>
+      Gloria
+    </h1>
+    <span class="trait-or"></span>
+    <p class="hero-date">Samedi &nbsp;·&nbsp; 15 Août 2026 &nbsp;·&nbsp; 15h30</p>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Découvrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FORMULAIRE DE CONNEXION DJANGO
+════════════════════════════════════════ -->
+<div class="login-section">
+  <span class="login-section-label reveal">Votre invitation</span>
+  <h2 class="login-section-title reveal reveal-delay-1">Identifiez-vous</h2>
+  <p class="login-section-sub reveal reveal-delay-2">Entrez vos informations pour confirmer votre présence</p>
+
+  {% if messages %}
+    <div class="messages-erreur reveal">
+      {% for message in messages %}{{ message }}{% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="POST" action="{% url 'connexion' %}">
+    {% csrf_token %}
+
+    <div class="champ reveal reveal-delay-2">
+      <label for="nom">Nom de famille</label>
+      <input
+        type="text"
+        id="nom"
+        name="nom"
+        placeholder="Votre nom..."
+        autocomplete="family-name"
+        autocorrect="off"
+        autocapitalize="characters"
+        required
+      />
+    </div>
+
+    <div class="champ reveal reveal-delay-3">
+      <label for="code_invitation">Code d'invitation</label>
+      <input
+        type="text"
+        id="code_invitation"
+        name="code_invitation"
+        placeholder="Ex : MRG-2025-001"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="characters"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn-valider reveal reveal-delay-4">
+      Confirmer ma présence &nbsp;→
+    </button>
+  </form>
 </div>
 
-<!-- ════════════════════════════════════
-     SCÈNE DE L'ENVELOPPE
-════════════════════════════════════ -->
-<div class="scene" id="scene">
-  <div class="enveloppe" id="enveloppe">
-
-    <!-- Corps de l'enveloppe -->
-    <div class="env-corps">
-      <div class="env-bord-bas"></div>
+<!-- ════════════════════════════════════════
+     COMPTE À REBOURS
+════════════════════════════════════════ -->
+<section class="countdown-section">
+  <span class="cd-label reveal">Le grand jour dans</span>
+  <p class="cd-title reveal reveal-delay-1">Nous vous attendons avec impatience</p>
+  <div class="cd-grid">
+    <div class="cd-card reveal reveal-delay-1">
+      <span class="cd-num" id="cd-j">00</span>
+      <span class="cd-unit">Jours</span>
     </div>
-
-    <!-- Rabat supérieur (s'ouvre en 3D) -->
-    <div class="env-rabat">
-      <div class="env-rabat-face"></div>
+    <div class="cd-card reveal reveal-delay-2">
+      <span class="cd-num" id="cd-h">00</span>
+      <span class="cd-unit">Heures</span>
     </div>
-
-    <!-- Sceau central (déclencheur du clic) -->
-    <div class="env-sceau" id="sceau" role="button" aria-label="Ouvrir l'invitation" tabindex="0">
-      <!-- Monogramme SVG minimaliste -->
-      <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 3 L27 12 L27 27 L3 27 L3 12 Z" stroke="#080c10" stroke-width="1.2" fill="none"/>
-        <path d="M3 12 L15 20 L27 12" stroke="#080c10" stroke-width="1.2" fill="none"/>
-        <circle cx="15" cy="3" r="1.5" fill="#080c10"/>
-      </svg>
+    <div class="cd-card reveal reveal-delay-3">
+      <span class="cd-num" id="cd-m">00</span>
+      <span class="cd-unit">Minutes</span>
     </div>
-
-    <!-- ── Carte d'invitation (sort lors de l'ouverture) ── -->
-    <div class="carte" id="carte">
-      <div class="carte-header">
-        <h2>Votre Présence<br><em>est Souhaitée</em></h2>
-        <p>Identifiez-vous pour confirmer</p>
-      </div>
-
-      <!-- Messages d'erreur Django -->
-      {% if messages %}
-        <div class="messages-erreur">
-          {% for message in messages %}{{ message }}{% endfor %}
-        </div>
-      {% endif %}
-
-      <!-- Formulaire de connexion -->
-      <form method="POST" action="{% url 'connexion' %}">
-        {% csrf_token %}
-
-        <div class="champ">
-          <label for="nom">Nom de famille</label>
-          <input
-            type="text"
-            id="nom"
-            name="nom"
-            placeholder="Votre nom..."
-            autocomplete="family-name"
-            autocorrect="off"
-            autocapitalize="characters"
-            required
-          />
-        </div>
-
-        <div class="champ">
-          <label for="code_invitation">Code d'invitation</label>
-          <input
-            type="text"
-            id="code_invitation"
-            name="code_invitation"
-            placeholder="Ex : MRG-2025-001"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="characters"
-            required
-          />
-        </div>
-
-        <button type="submit" class="btn-valider">
-          Ouvrir mon invitation &nbsp;→
-        </button>
-      </form>
+    <div class="cd-card reveal reveal-delay-4">
+      <span class="cd-num" id="cd-s">00</span>
+      <span class="cd-unit">Secondes</span>
     </div>
-    <!-- /carte -->
+  </div>
+</section>
 
-  </div><!-- /enveloppe -->
-</div><!-- /scene -->
+<!-- ════════════════════════════════════════
+     CALENDRIER
+════════════════════════════════════════ -->
+<section class="cal-section">
+  <span class="section-label reveal">La date</span>
+  <h2 class="section-title reveal reveal-delay-1">Août 2026</h2>
+  <div class="cal-grid reveal reveal-delay-2">
+    <div class="cal-dn">L</div><div class="cal-dn">M</div>
+    <div class="cal-dn">M</div><div class="cal-dn">J</div>
+    <div class="cal-dn">V</div><div class="cal-dn">S</div>
+    <div class="cal-dn">D</div>
+    <div class="cal-d vide"></div><div class="cal-d vide"></div>
+    <div class="cal-d vide"></div><div class="cal-d vide"></div>
+    <div class="cal-d vide"></div>
+    <div class="cal-d">1</div><div class="cal-d">2</div>
+    <div class="cal-d">3</div><div class="cal-d">4</div>
+    <div class="cal-d">5</div><div class="cal-d">6</div>
+    <div class="cal-d">7</div><div class="cal-d">8</div>
+    <div class="cal-d">9</div><div class="cal-d">10</div>
+    <div class="cal-d">11</div><div class="cal-d">12</div>
+    <div class="cal-d">13</div><div class="cal-d">14</div>
+    <div class="cal-d special">15</div>
+    <div class="cal-d">16</div><div class="cal-d">17</div>
+    <div class="cal-d">18</div><div class="cal-d">19</div>
+    <div class="cal-d">20</div><div class="cal-d">21</div>
+    <div class="cal-d">22</div><div class="cal-d">23</div>
+    <div class="cal-d">24</div><div class="cal-d">25</div>
+    <div class="cal-d">26</div><div class="cal-d">27</div>
+    <div class="cal-d">28</div><div class="cal-d">29</div>
+    <div class="cal-d">30</div><div class="cal-d">31</div>
+  </div>
+</section>
 
-<!-- Indicateur de clic -->
-<p class="hint" id="hint">
-  <span class="fleche">↑</span>
-  Appuyez sur le sceau pour ouvrir
-</p>
+<!-- ════════════════════════════════════════
+     PROGRAMME
+════════════════════════════════════════ -->
+<section class="section">
+  <span class="section-label reveal">Déroulement</span>
+  <h2 class="section-title reveal reveal-delay-1">Programme</h2>
+  <div class="timeline">
+    <div class="tl-item reveal reveal-delay-1">
+      <div class="tl-dot"></div>
+      <p class="tl-time">15h30</p>
+      <p class="tl-event">Cérémonie</p>
+      <p class="tl-lieu">Hôtel Gloria, Kinshasa</p>
+    </div>
+    <div class="tl-item reveal reveal-delay-2">
+      <div class="tl-dot"></div>
+      <p class="tl-time">16h30</p>
+      <p class="tl-event">Cocktail de bienvenue</p>
+      <p class="tl-lieu">Terrasse de l'Hôtel Gloria</p>
+    </div>
+    <div class="tl-item reveal reveal-delay-3">
+      <div class="tl-dot"></div>
+      <p class="tl-time">17h00</p>
+      <p class="tl-event">Séance photo</p>
+      <p class="tl-lieu">Jardins de l'Hôtel Gloria</p>
+    </div>
+    <div class="tl-item reveal reveal-delay-4">
+      <div class="tl-dot"></div>
+      <p class="tl-time">19h00</p>
+      <p class="tl-event">Dîner de gala</p>
+      <p class="tl-lieu">Grande salle — Hôtel Gloria</p>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <p class="tl-time">21h00</p>
+      <p class="tl-event">Soirée dansante</p>
+      <p class="tl-lieu">Jusqu'au bout de la nuit 🎉</p>
+    </div>
+  </div>
+</section>
 
+<!-- ════════════════════════════════════════
+     LIEU
+════════════════════════════════════════ -->
+<section class="lieu-section">
+  <span class="section-label reveal">Où nous rejoindre</span>
+  <span class="lieu-icone reveal reveal-delay-1">🏨</span>
+  <h2 class="lieu-nom reveal reveal-delay-2">Hôtel Gloria</h2>
+  <p class="lieu-adresse reveal reveal-delay-3">
+    Avenue de la Paix, Commune de la Gombe<br/>
+    Kinshasa, République Démocratique du Congo
+  </p>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <p class="footer-names">Eva &amp; Gloria</p>
+  <p class="footer-date">15 · 08 · 2026 &nbsp;·&nbsp; Hôtel Gloria · Kinshasa</p>
+</footer>
 
 <script>
-  /* ════════════════════════════════════════════════════════
-     PARTICULES DORÉES EN FOND
-  ════════════════════════════════════════════════════════ */
-  (function() {
-    const container = document.getElementById('stars');
-    const count = 28;
-    for (let i = 0; i < count; i++) {
-      const s = document.createElement('span');
-      const size = Math.random() * 2.5 + 1;
-      s.style.cssText = `
-        width: ${size}px; height: ${size}px;
-        top: ${Math.random() * 100}%;
-        left: ${Math.random() * 100}%;
-        --dur: ${Math.random() * 3 + 2}s;
-        --delay: ${Math.random() * 4}s;
-      `;
-      container.appendChild(s);
+  /* ══════════════════════════════════════════
+     COMPTE À REBOURS
+     ══ MODIFIE cette date si besoin ══
+  ══════════════════════════════════════════ */
+  const weddingDate = new Date('2026-08-15T15:30:00');
+
+  function updateCountdown() {
+    const diff = weddingDate - new Date();
+    if (diff <= 0) {
+      ['cd-j','cd-h','cd-m','cd-s'].forEach(id =>
+        document.getElementById(id).textContent = '00'
+      );
+      return;
     }
-  })();
-
-  /* ════════════════════════════════════════════════════════
-     ANIMATION D'OUVERTURE DE L'ENVELOPPE
-     Déclenchée au clic sur le sceau ou sa zone
-  ════════════════════════════════════════════════════════ */
-  const scene  = document.getElementById('scene');
-  const sceau  = document.getElementById('sceau');
-  const hint   = document.getElementById('hint');
-  let   ouvert = false;
-
-  function ouvrirEnveloppe() {
-    if (ouvert) return; // Un seul déclenchement
-    ouvert = true;
-
-    /* 1. Ajoute la classe .ouvert sur .scene
-          → déclenche rotateX(-180deg) sur le rabat (voir CSS)
-          → déclenche translateY sur la carte (voir CSS) */
-    scene.classList.add('ouvert');
-
-    /* 2. Cache le hint */
-    hint.style.opacity = '0';
-
-    /* 3. Met le body en scrollable une fois la carte sortie
-          (délai = durée de la transition) */
-    setTimeout(() => {
-      document.body.style.overflow = 'auto';
-    }, 1400);
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('cd-j').textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById('cd-h').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));
   }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 
-  /* Clic sur le sceau */
-  sceau.addEventListener('click', ouvrirEnveloppe);
-
-  /* Accessibilité clavier (Entrée / Espace) */
-  sceau.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      ouvrirEnveloppe();
-    }
-  });
-
-  /* ════════════════════════════════════════════════════════
-     OUVERTURE AUTOMATIQUE si Django a renvoyé une erreur
-     (l'enveloppe doit déjà être ouverte pour montrer le formulaire)
-  ════════════════════════════════════════════════════════ */
-  {% if messages %}
-  /* Ouvrir immédiatement sans animation si erreur présente */
-  window.addEventListener('DOMContentLoaded', () => {
-    scene.style.transition = 'none'; // désactive les transitions pour ouverture instantanée
-    // On remet les transitions après un tick pour que le CSS prenne effet
-    requestAnimationFrame(() => {
-      scene.classList.add('ouvert');
-      hint.style.opacity = '0';
-      document.body.style.overflow = 'auto';
+  /* ══════════════════════════════════════════
+     SCROLL REVEAL
+  ══════════════════════════════════════════ */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
     });
-  });
-  {% endif %}
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
 </body>
