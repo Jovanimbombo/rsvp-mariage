@@ -110,6 +110,8 @@ def rsvp(request):
         return redirect('confirmation')
 
     return render(request, 'rsvp_app/rsvp.html', {'invite': invite})
+def invitation(request):
+    return render(request, 'rsvp_app/invitation.html')
 
 
 # ─────────────────────────────────────────────
@@ -135,3 +137,4 @@ def deconnexion(request):
     """Vide la session et redirige vers la connexion."""
     request.session.flush()
     return redirect('connexion')
+

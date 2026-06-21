@@ -14,4 +14,5 @@ urlpatterns = [
 
     # Déconnexion / réinitialisation de session
     path('deconnexion/',  views.deconnexion,  name='deconnexion'),
+    path('invitation/', views.invitation, name='invitation'),
 ]
