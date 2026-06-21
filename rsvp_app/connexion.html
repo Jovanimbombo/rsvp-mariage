@@ -46,11 +46,12 @@
     .reveal-delay-4 { transition-delay: .48s; }
 
     /* ════════════════════════════════════════
-       HERO — Photo plein écran
+       HERO — Photo plein écran ENTIÈRE
     ════════════════════════════════════════ */
     .hero {
       position: relative;
       width: 100%;
+      /* Hauteur = toute la hauteur de l'écran */
       height: 100dvh;
       overflow: hidden;
       display: flex;
@@ -60,6 +61,7 @@
       padding-bottom: 3rem;
     }
 
+    /* Photo ENTIÈRE sans recadrage */
     .hero-photo {
       position: absolute;
       inset: 0;
@@ -70,15 +72,16 @@
       display: block;
     }
 
+    /* Overlay dégradé bas uniquement — laisse la photo visible en haut */
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to bottom,
         rgba(253,248,240,0)   0%,
-        rgba(253,248,240,0)   40%,
-        rgba(253,248,240,.65) 68%,
-        rgba(253,248,240,.97) 90%,
+        rgba(253,248,240,0)   45%,
+        rgba(253,248,240,.65) 70%,
+        rgba(253,248,240,.97) 92%,
         rgba(253,248,240,1)   100%
       );
     }
@@ -114,6 +117,7 @@
       line-height: 1.05;
       color: var(--brun);
     }
+
     .hero-names .ampersand {
       display: block;
       font-family: 'Cormorant Garamond', serif;
@@ -140,6 +144,7 @@
       font-weight: 400;
     }
 
+    /* Scroll hint */
     .scroll-hint {
       position: absolute;
       bottom: 1rem;
@@ -159,7 +164,8 @@
       color: var(--brun-doux);
     }
     .scroll-line {
-      width: 1px; height: 30px;
+      width: 1px;
+      height: 30px;
       background: linear-gradient(to bottom, var(--or), transparent);
       animation: pulse-line 1.8s ease-in-out infinite;
     }
@@ -169,15 +175,13 @@
     }
 
     /* ════════════════════════════════════════
-       FORMULAIRE DE CONNEXION DJANGO
+       SECTION COMMUNE
     ════════════════════════════════════════ */
-    .login-section {
-      padding: 3.5rem 2rem 4rem;
+    .section {
+      padding: 4rem 2rem;
       border-top: 1px solid var(--or-pale);
-      text-align: center;
     }
-
-    .login-section-label {
+    .section-label {
       display: block;
       font-size: .52rem;
       font-weight: 500;
@@ -186,111 +190,13 @@
       color: var(--or);
       margin-bottom: .5rem;
     }
-
-    .login-section-title {
+    .section-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
+      font-size: clamp(1.6rem, 7vw, 2rem);
       font-weight: 400;
-      font-style: italic;
       color: var(--brun);
-      margin-bottom: .4rem;
-    }
-
-    .login-section-sub {
-      font-size: .68rem;
-      color: var(--texte-doux);
-      font-weight: 300;
-      margin-bottom: 2rem;
-    }
-
-    /* Champs */
-    .champ {
-      position: relative;
+      line-height: 1.2;
       margin-bottom: 1.6rem;
-      text-align: left;
-    }
-    .champ label {
-      display: block;
-      font-size: .55rem;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--or);
-      margin-bottom: .4rem;
-    }
-    .champ input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid rgba(44,31,14,.2);
-      padding: .55rem 0 .4rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      color: var(--brun);
-      outline: none;
-      transition: border-color .25s ease;
-    }
-    .champ input::placeholder {
-      color: rgba(44,31,14,.25);
-      font-style: italic;
-    }
-    .champ::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 0; height: 1.5px;
-      background: linear-gradient(90deg, var(--or-clair), var(--or));
-      transition: width .3s ease;
-    }
-    .champ:focus-within::after { width: 100%; }
-
-    /* Bouton valider */
-    .btn-valider {
-      display: block;
-      width: 100%;
-      padding: 1.1rem;
-      margin-top: 2rem;
-      background: linear-gradient(135deg, var(--brun) 0%, var(--brun-doux) 100%);
-      color: var(--creme);
-      font-family: 'Montserrat', sans-serif;
-      font-size: .68rem;
-      font-weight: 500;
-      letter-spacing: .28em;
-      text-transform: uppercase;
-      border: 1px solid rgba(184,146,74,.3);
-      border-radius: 2px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: transform .15s ease, box-shadow .2s ease;
-      min-height: 54px;
-      box-shadow: 0 8px 28px rgba(44,31,14,.18);
-    }
-    .btn-valider::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(212,172,110,.15) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity .25s ease;
-    }
-    .btn-valider:hover::before { opacity: 1; }
-    .btn-valider:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 36px rgba(44,31,14,.25);
-    }
-    .btn-valider:active { transform: scale(.98); }
-
-    /* Messages d'erreur Django */
-    .messages-erreur {
-      background: rgba(180,60,60,.08);
-      border: 1px solid rgba(180,60,60,.25);
-      border-radius: 4px;
-      padding: .7rem 1rem;
-      margin-bottom: 1.2rem;
-      font-size: .75rem;
-      color: #a03030;
-      text-align: center;
-      line-height: 1.5;
     }
 
     /* ════════════════════════════════════════
@@ -353,23 +259,6 @@
       text-align: center;
       border-top: 1px solid var(--or-pale);
     }
-    .section-label {
-      display: block;
-      font-size: .52rem;
-      font-weight: 500;
-      letter-spacing: .38em;
-      text-transform: uppercase;
-      color: var(--or);
-      margin-bottom: .5rem;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 7vw, 2rem);
-      font-weight: 400;
-      color: var(--brun);
-      line-height: 1.2;
-      margin-bottom: 1.6rem;
-    }
     .cal-grid {
       display: grid;
       grid-template-columns: repeat(7,1fr);
@@ -393,6 +282,7 @@
       font-size: .68rem;
       color: var(--texte-doux);
       border-radius: 50%;
+      transition: background .2s;
     }
     .cal-d.vide { opacity: 0; pointer-events: none; }
     .cal-d.special {
@@ -407,10 +297,6 @@
     /* ════════════════════════════════════════
        PROGRAMME TIMELINE
     ════════════════════════════════════════ */
-    .section {
-      padding: 4rem 2rem;
-      border-top: 1px solid var(--or-pale);
-    }
     .timeline {
       position: relative;
       padding-left: 1.8rem;
@@ -423,11 +309,15 @@
       width: 1px;
       background: linear-gradient(to bottom, transparent, var(--or-pale) 15%, var(--or-pale) 85%, transparent);
     }
-    .tl-item { position: relative; padding-bottom: 2rem; }
+    .tl-item {
+      position: relative;
+      padding-bottom: 2rem;
+    }
     .tl-item:last-child { padding-bottom: 0; }
     .tl-dot {
       position: absolute;
-      left: -1.8rem; top: .3rem;
+      left: -1.8rem;
+      top: .3rem;
       width: 8px; height: 8px;
       border-radius: 50%;
       background: var(--or);
@@ -463,7 +353,11 @@
       border-top: 1px solid var(--or-pale);
       text-align: center;
     }
-    .lieu-icone { font-size: 1.8rem; margin-bottom: .8rem; display: block; }
+    .lieu-icone {
+      font-size: 1.8rem;
+      margin-bottom: .8rem;
+      display: block;
+    }
     .lieu-nom {
       font-family: 'Playfair Display', serif;
       font-size: 1.6rem;
@@ -477,6 +371,47 @@
       color: var(--texte-doux);
       line-height: 1.7;
       margin-bottom: 1.6rem;
+      font-weight: 300;
+    }
+    .lieu-divider {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin: 1.4rem 0;
+    }
+    .lieu-divider::before, .lieu-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--or-pale);
+    }
+    .lieu-divider span {
+      font-size: .5rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--or);
+    }
+    .lieu-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      text-align: left;
+    }
+    .lieu-detail-card {
+      background: var(--blanc);
+      border: 1px solid var(--or-pale);
+      border-radius: 6px;
+      padding: 1rem .9rem;
+    }
+    .lieu-detail-icon { font-size: 1rem; margin-bottom: .4rem; display: block; }
+    .lieu-detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: .82rem;
+      color: var(--brun);
+      margin-bottom: .3rem;
+    }
+    .lieu-detail-text {
+      font-size: .64rem;
+      color: var(--texte-doux);
+      line-height: 1.6;
       font-weight: 300;
     }
 
@@ -547,6 +482,7 @@
       transform: translateY(-2px);
       box-shadow: 0 14px 40px rgba(184,146,74,.5);
     }
+    .btn-rsvp:active { transform: translateY(0); }
 
     /* ════════════════════════════════════════
        FOOTER
@@ -570,8 +506,12 @@
       color: rgba(236,223,200,.3);
     }
 
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
     @media (max-width: 360px) {
       .cd-num { font-size: 1.6rem; }
+      .lieu-details { grid-template-columns: 1fr; }
     }
     @supports (padding: max(0px)) {
       body { padding-bottom: env(safe-area-inset-bottom); }
@@ -584,16 +524,20 @@
      HERO — PHOTO PLEINE PAGE
 ════════════════════════════════════════ -->
 <section class="hero">
+
   <!--
     ╔══════════════════════════════════════════╗
     ║  REMPLACE src="" PAR L'URL DE TA PHOTO  ║
+    ║  ex: src="https://i.imgur.com/xxx.jpg"  ║
     ╚══════════════════════════════════════════╝
   -->
   <img
-    src="https://i.imgur.com/vrtCuPh.jpeg"
+    src="src="https://i.imgur.com/vrtCuPh.jpeg""
     alt="Eva & Gloria"
     class="hero-photo"
+    id="hero-photo"
   />
+
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
@@ -612,57 +556,6 @@
     <div class="scroll-line"></div>
   </div>
 </section>
-
-<!-- ════════════════════════════════════════
-     FORMULAIRE DE CONNEXION DJANGO
-════════════════════════════════════════ -->
-<div class="login-section">
-  <span class="login-section-label reveal">Votre invitation</span>
-  <h2 class="login-section-title reveal reveal-delay-1">Identifiez-vous</h2>
-  <p class="login-section-sub reveal reveal-delay-2">Entrez vos informations pour confirmer votre présence</p>
-
-  {% if messages %}
-    <div class="messages-erreur reveal">
-      {% for message in messages %}{{ message }}{% endfor %}
-    </div>
-  {% endif %}
-
-  <form method="POST" action="{% url 'connexion' %}">
-    {% csrf_token %}
-
-    <div class="champ reveal reveal-delay-2">
-      <label for="nom">Nom de famille</label>
-      <input
-        type="text"
-        id="nom"
-        name="nom"
-        placeholder="Votre nom..."
-        autocomplete="family-name"
-        autocorrect="off"
-        autocapitalize="characters"
-        required
-      />
-    </div>
-
-    <div class="champ reveal reveal-delay-3">
-      <label for="code_invitation">Code d'invitation</label>
-      <input
-        type="text"
-        id="code_invitation"
-        name="code_invitation"
-        placeholder="Ex : MRG-2025-001"
-        autocomplete="off"
-        autocorrect="off"
-        autocapitalize="characters"
-        required
-      />
-    </div>
-
-    <button type="submit" class="btn-valider reveal reveal-delay-4">
-      Confirmer ma présence &nbsp;→
-    </button>
-  </form>
-</div>
 
 <!-- ════════════════════════════════════════
      COMPTE À REBOURS
@@ -696,11 +589,13 @@
 <section class="cal-section">
   <span class="section-label reveal">La date</span>
   <h2 class="section-title reveal reveal-delay-1">Août 2026</h2>
+
   <div class="cal-grid reveal reveal-delay-2">
     <div class="cal-dn">L</div><div class="cal-dn">M</div>
     <div class="cal-dn">M</div><div class="cal-dn">J</div>
     <div class="cal-dn">V</div><div class="cal-dn">S</div>
     <div class="cal-dn">D</div>
+    <!-- Août 2026 commence un samedi -->
     <div class="cal-d vide"></div><div class="cal-d vide"></div>
     <div class="cal-d vide"></div><div class="cal-d vide"></div>
     <div class="cal-d vide"></div>
@@ -729,6 +624,7 @@
 <section class="section">
   <span class="section-label reveal">Déroulement</span>
   <h2 class="section-title reveal reveal-delay-1">Programme</h2>
+
   <div class="timeline">
     <div class="tl-item reveal reveal-delay-1">
       <div class="tl-dot"></div>
@@ -764,7 +660,7 @@
 </section>
 
 <!-- ════════════════════════════════════════
-     LIEU
+     LIEU — HÔTEL GLORIA
 ════════════════════════════════════════ -->
 <section class="lieu-section">
   <span class="section-label reveal">Où nous rejoindre</span>
@@ -774,6 +670,56 @@
     Avenue de la Paix, Commune de la Gombe<br/>
     Kinshasa, République Démocratique du Congo
   </p>
+
+  <div class="lieu-divider reveal reveal-delay-4">
+    <span>Infos pratiques</span>
+  </div>
+
+  <div class="lieu-details">
+    <div class="lieu-detail-card reveal reveal-delay-1">
+      <span class="lieu-detail-icon">👗</span>
+      <p class="lieu-detail-title">Dress Code</p>
+      <p class="lieu-detail-text">Tenue de soirée élégante. Touche de couleur bienvenue.</p>
+    </div>
+    <div class="lieu-detail-card reveal reveal-delay-2">
+      <span class="lieu-detail-icon">🚌</span>
+      <p class="lieu-detail-title">Transport</p>
+      <p class="lieu-detail-text">Navettes disponibles pour les invités venant de loin.</p>
+    </div>
+    <div class="lieu-detail-card reveal reveal-delay-3">
+      <span class="lieu-detail-icon">📸</span>
+      <p class="lieu-detail-title">Photos</p>
+      <p class="lieu-detail-text">Partagez avec #EvaEtGloria2026</p>
+    </div>
+    <div class="lieu-detail-card reveal reveal-delay-4">
+      <span class="lieu-detail-icon">🎁</span>
+      <p class="lieu-detail-title">Cadeaux</p>
+      <p class="lieu-detail-text">Votre présence est notre plus beau cadeau.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     RSVP
+════════════════════════════════════════ -->
+<section class="rsvp-section">
+  <span class="rsvp-label reveal">Confirmez votre venue</span>
+  <h2 class="rsvp-title reveal reveal-delay-1">RSVP</h2>
+  <span class="rsvp-deadline reveal reveal-delay-2">Avant le 1er Août 2026</span>
+  <p class="rsvp-text reveal reveal-delay-3">
+    Merci de confirmer votre présence afin que nous puissions vous accueillir dans les meilleures conditions.
+  </p>
+  <!--
+    ╔══════════════════════════════════════════════════════╗
+    ║  LIEN RSVP — pointe vers ton site Railway           ║
+    ╚══════════════════════════════════════════════════════╝
+  -->
+  <a
+    href="https://rsvp-mariage-production.up.railway.app/"
+    class="btn-rsvp reveal reveal-delay-4"
+  >
+    Confirmer ma présence
+  </a>
 </section>
 
 <!-- ════════════════════════════════════════
@@ -784,10 +730,55 @@
   <p class="footer-date">15 · 08 · 2026 &nbsp;·&nbsp; Hôtel Gloria · Kinshasa</p>
 </footer>
 
+
 <script>
   /* ══════════════════════════════════════════
+     PHOTO HERO — Fallback élégant si pas d'image
+  ══════════════════════════════════════════ */
+  const heroPhoto = document.getElementById('hero-photo');
+
+  heroPhoto.onerror = function() {
+    /* Si l'image ne charge pas : fond dégradé */
+    this.style.display = 'none';
+    document.querySelector('.hero').style.background =
+      'linear-gradient(160deg, #2c1f0e 0%, #5c4a32 50%, #b8924a 100%)';
+  };
+
+  /* Si src vide au départ : applique le fallback directement */
+  if (!heroPhoto.getAttribute('src')) {
+    heroPhoto.style.display = 'none';
+    document.querySelector('.hero').style.background =
+      'linear-gradient(160deg, #2c1f0e 0%, #5c4a32 45%, #b8924a 100%)';
+
+    /* Affiche initiales au centre du hero */
+    const initDiv = document.createElement('div');
+    initDiv.style.cssText = `
+      position:absolute; inset:0; z-index:1;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+    `;
+    initDiv.innerHTML = `
+      <div style="
+        width:160px;height:160px;border-radius:50%;
+        background:rgba(255,255,255,.08);
+        border:1px solid rgba(212,172,110,.35);
+        display:flex;align-items:center;justify-content:center;
+        font-family:'Playfair Display',serif;font-size:2.8rem;
+        color:rgba(212,172,110,.7);font-style:italic;
+        backdrop-filter:blur(4px);
+      ">E &amp; G</div>
+      <p style="
+        margin-top:1rem;font-size:.58rem;letter-spacing:.25em;
+        text-transform:uppercase;color:rgba(236,223,200,.4);
+        font-family:'Montserrat',sans-serif;
+      ">Votre photo ici</p>
+    `;
+    document.querySelector('.hero').appendChild(initDiv);
+  }
+
+  /* ══════════════════════════════════════════
      COMPTE À REBOURS
-     ══ MODIFIE cette date si besoin ══
+     ══ MODIFIE cette date pour ton mariage ══
   ══════════════════════════════════════════ */
   const weddingDate = new Date('2026-08-15T15:30:00');
 

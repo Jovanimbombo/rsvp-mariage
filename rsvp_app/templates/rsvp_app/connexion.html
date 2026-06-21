@@ -1,605 +1,817 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Invitation — Mariage de Gloria & Eva</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Eva & Gloria — Mariage 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ══════════════════════════════════════════════════════
-       VARIABLES & RESET
-    ══════════════════════════════════════════════════════ */
     :root {
-      --noir:       #080c10;
-      --bleu-nuit:  #0a1628;
-      --bleu-ciel:  #5baee3;
-      --bleu-clair: #a8d4f0;
-      --or:         #c9a84c;
-      --or-clair:   #e8cf8a;
-      --blanc:      #f7f4ef;
-      --blanc-pur:  #ffffff;
-
-      /* Dimensions adaptatives de l'enveloppe */
-      --env-w: min(380px, 88vw);
-      --env-h: calc(var(--env-w) * 0.65);
-      --flap-h: calc(var(--env-w) * 0.42);
-
-      /* Timings des animations */
-      --t-flap:  0.6s;
-      --t-card:  0.8s;
-      --t-delay: 0.4s;
+      --creme:      #fdf8f0;
+      --creme-2:    #f5ede0;
+      --or:         #b8924a;
+      --or-clair:   #d4ac6e;
+      --or-pale:    #ecdfc8;
+      --brun:       #2c1f0e;
+      --brun-doux:  #5c4a32;
+      --texte:      #3a2e22;
+      --texte-doux: #7a6a56;
+      --blanc:      #ffffff;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html {
-      height: -webkit-fill-available;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      background: var(--noir);
-      min-height: 100dvh;
-      min-height: -webkit-fill-available;
-      font-family: 'Jost', sans-serif;
-      color: var(--blanc);
+      background: var(--creme);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--texte);
+      max-width: 480px;
+      margin: 0 auto;
       overflow-x: hidden;
-      overflow-y: hidden; /* Géré par le JS après ouverture */
+    }
+
+    /* ── ANIMATIONS SCROLL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .12s; }
+    .reveal-delay-2 { transition-delay: .24s; }
+    .reveal-delay-3 { transition-delay: .36s; }
+    .reveal-delay-4 { transition-delay: .48s; }
+
+    /* ════════════════════════════════════════
+       HERO — Photo plein écran ENTIÈRE
+    ════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      /* Hauteur = toute la hauteur de l'écran */
+      height: 100dvh;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 2rem 0;
-      
-      background-image:
-        radial-gradient(ellipse at 20% 30%, rgba(91,174,227,.08) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 70%, rgba(201,168,76,.06) 0%, transparent 55%);
+      justify-content: flex-end;
+      padding-bottom: 3rem;
     }
 
-    /* ══════════════════════════════════════════════════════
-       EFFET PARTICULES / ÉTOILES
-    ══════════════════════════════════════════════════════ */
-    .stars {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .stars span {
+    /* Photo ENTIÈRE sans recadrage */
+    .hero-photo {
       position: absolute;
-      border-radius: 50%;
-      background: var(--or-clair);
-      opacity: 0;
-      animation: scintille var(--dur) ease-in-out infinite var(--delay);
-    }
-    @keyframes scintille {
-      0%, 100% { opacity: 0; transform: scale(.6); }
-      50%       { opacity: .5; transform: scale(1); }
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
     }
 
-    /* ══════════════════════════════════════════════════════
-       TITRE PRINCIPAL
-    ══════════════════════════════════════════════════════ */
-    .titre-page {
+    /* Overlay dégradé bas uniquement — laisse la photo visible en haut */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(253,248,240,0)   0%,
+        rgba(253,248,240,0)   45%,
+        rgba(253,248,240,.65) 70%,
+        rgba(253,248,240,.97) 92%,
+        rgba(253,248,240,1)   100%
+      );
+    }
+
+    .hero-content {
       position: relative;
       z-index: 2;
       text-align: center;
-      margin-top: max(1rem, env(safe-area-inset-top));
-      margin-bottom: 2rem;
-      flex-shrink: 0;
-      animation: fadeDown .8s ease both;
+      padding: 0 2rem;
+      width: 100%;
     }
-    .titre-page h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: clamp(1.6rem, 6vw, 2.4rem);
-      letter-spacing: .18em;
-      color: var(--blanc);
+
+    .hero-label {
+      display: inline-block;
+      font-size: .55rem;
+      font-weight: 500;
+      letter-spacing: .38em;
       text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: .9rem;
+      padding: .3rem 1rem;
+      border: 1px solid rgba(184,146,74,.35);
+      border-radius: 20px;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(6px);
     }
-    .titre-page .trait-or {
+
+    .hero-names {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 13vw, 4.2rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.05;
+      color: var(--brun);
+    }
+
+    .hero-names .ampersand {
       display: block;
-      width: 60px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .42em;
+      font-style: normal;
+      letter-spacing: .18em;
+      color: var(--or);
+      margin: .2em 0;
+    }
+
+    .trait-or {
+      display: block;
+      width: 44px;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--or), transparent);
-      margin: .6rem auto;
+      margin: 1rem auto;
     }
-    .titre-page p {
-      font-size: .75rem;
+
+    .hero-date {
+      font-size: .62rem;
       letter-spacing: .22em;
-      color: var(--bleu-clair);
       text-transform: uppercase;
-    }
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-18px); }
-      to   { opacity: 1; transform: translateY(0); }
+      color: var(--brun-doux);
+      font-weight: 400;
     }
 
-    /* ══════════════════════════════════════════════════════
-       CONTENEUR DE LA SCÈNE ET DE L'ENVELOPPE
-    ══════════════════════════════════════════════════════ */
-    .scene {
-      position: relative;
-      z-index: 2;
-      width: var(--env-w);
-      height: var(--env-h);
-      margin: auto 0;
-      perspective: 1500px;
-      perspective-origin: 50% 0%;
-      transition: margin 0.5s ease, height 0.5s ease;
-      animation: fadeUp .9s cubic-bezier(.22,.68,0,1.2) .15s both;
-    }
-
-    /* Ajustement structurel pour laisser la carte respirer au scroll */
-    .scene.ouvert {
-      margin-top: 4rem; 
-      margin-bottom: 2rem;
-      height: auto;
-    }
-
-    .enveloppe {
-      position: relative;
-      width: var(--env-w);
-      height: var(--env-h);
-      transform-style: preserve-3d;
-      filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
-      overflow: hidden; /* Masque la carte tant qu'elle est fermée */
-    }
-
-    .scene.ouvert .enveloppe {
-      overflow: visible; /* Permet à la carte de sortir */
-    }
-
-    /* Fond intérieur de l'enveloppe */
-    .env-fond-interieur {
+    /* Scroll hint */
+    .scroll-hint {
       position: absolute;
-      inset: 0;
-      background: #050b14;
-      border-radius: 4px;
-      border: 1px solid rgba(91,174,227,.15);
-      z-index: 1;
-    }
-
-    /* Poche avant de l'enveloppe */
-    .env-poche-avant {
-      position: absolute;
-      inset: 0;
-      z-index: 6;
-      background: linear-gradient(170deg, rgba(13,32,64,0) 40%, #060e1a 100%);
-      pointer-events: none;
-      border-radius: 0 0 6px 6px;
-      overflow: hidden;
-    }
-
-    /* Découpes géométriques des plis */
-    .env-poche-avant::before,
-    .env-poche-avant::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      width: 0;
-      height: 0;
-    }
-    .env-poche-avant::before {
-      left: 0;
-      border-style: solid;
-      border-width: 0 0 calc(var(--env-h) * .6) calc(var(--env-w) * .52);
-      border-color: transparent transparent rgba(91,174,227,.14) transparent;
-    }
-    .env-poche-avant::after {
-      right: 0;
-      border-style: solid;
-      border-width: 0 calc(var(--env-w) * .52) calc(var(--env-h) * .6) 0;
-      border-color: transparent rgba(91,174,227,.1) transparent transparent;
-    }
-
-    .env-bord-bas {
-      position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent 5%, var(--or) 40%, var(--or-clair) 50%, var(--or) 60%, transparent 95%);
-    }
-
-    /* Rabat supérieur pivotant */
-    .env-rabat {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: var(--flap-h);
-      transform-origin: top center;
-      transition: transform var(--t-flap) cubic-bezier(.4, 0, .2, 1);
-      z-index: 10;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-    }
-
-    .env-rabat-face {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(185deg, #0f2645 0%, #091830 60%, #0d2040 100%);
-      clip-path: polygon(0% 0%, 100% 0%, 50% 95%);
-      border-top: 1px solid rgba(91,174,227,.3);
-    }
-
-    .scene.ouvert .env-rabat {
-      transform: rotateX(-180deg);
-      z-index: 2; 
-      transition: transform var(--t-flap) cubic-bezier(.4, 0, .2, 1), z-index 0s linear var(--t-flap);
-    }
-
-    /* ══════════════════════════════════════════════════════
-       SCEAU DE FERMETURE
-    ══════════════════════════════════════════════════════ */
-    .env-sceau {
-      position: absolute;
+      bottom: 1rem;
       left: 50%;
-      top: calc(var(--flap-h) - 28px);
       transform: translateX(-50%);
-      z-index: 20;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, var(--or-clair), var(--or) 60%, #8c6e2a);
-      border: 1px solid rgba(255,255,255,.2);
-      box-shadow:
-        0 0 0 3px rgba(201,168,76,.3),
-        0 4px 16px rgba(0,0,0,.6);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .35rem;
+      opacity: .45;
+    }
+    .scroll-hint span {
+      font-size: .48rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--brun-doux);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 30px;
+      background: linear-gradient(to bottom, var(--or), transparent);
+      animation: pulse-line 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-line {
+      0%,100% { opacity:.3; transform:scaleY(.6); transform-origin:top; }
+      50%      { opacity:1;  transform:scaleY(1);  transform-origin:top; }
+    }
+
+    /* ════════════════════════════════════════
+       SECTION COMMUNE
+    ════════════════════════════════════════ */
+    .section {
+      padding: 4rem 2rem;
+      border-top: 1px solid var(--or-pale);
+    }
+    .section-label {
+      display: block;
+      font-size: .52rem;
+      font-weight: 500;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: .5rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 7vw, 2rem);
+      font-weight: 400;
+      color: var(--brun);
+      line-height: 1.2;
+      margin-bottom: 1.6rem;
+    }
+
+    /* ════════════════════════════════════════
+       COMPTE À REBOURS
+    ════════════════════════════════════════ */
+    .countdown-section {
+      padding: 3.5rem 2rem;
+      background: var(--brun);
+      text-align: center;
+      border-top: 1px solid rgba(184,146,74,.2);
+    }
+    .cd-label {
+      display: block;
+      font-size: .52rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--or-clair);
+      margin-bottom: .45rem;
+    }
+    .cd-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--creme);
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+    .cd-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: .7rem;
+    }
+    .cd-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(212,172,110,.2);
+      border-radius: 4px;
+      padding: 1rem .3rem .75rem;
+    }
+    .cd-num {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--or-clair);
+      line-height: 1;
+    }
+    .cd-unit {
+      display: block;
+      font-size: .47rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(253,248,240,.38);
+      margin-top: .3rem;
+    }
+
+    /* ════════════════════════════════════════
+       CALENDRIER
+    ════════════════════════════════════════ */
+    .cal-section {
+      padding: 4rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--or-pale);
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7,1fr);
+      gap: .15rem;
+      max-width: 290px;
+      margin: 1.6rem auto 0;
+    }
+    .cal-dn {
+      font-size: .48rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--or);
+      text-align: center;
+      padding: .25rem 0;
+    }
+    .cal-d {
+      aspect-ratio: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      animation: pulse-sceau 2.5s ease-in-out infinite;
-      transition: transform .2s ease, opacity .3s ease;
-    }
-    .env-sceau:hover {
-      transform: translateX(-50%) scale(1.06);
-    }
-    .env-sceau svg {
-      width: 26px;
-      height: 26px;
-      fill: var(--noir);
-    }
-
-    @keyframes pulse-sceau {
-      0%, 100% { box-shadow: 0 0 0 3px rgba(201,168,76,.3), 0 4px 16px rgba(0,0,0,.6); }
-      50%       { box-shadow: 0 0 0 8px rgba(201,168,76,.15), 0 4px 20px rgba(201,168,76,.3); }
-    }
-
-    .scene.ouvert .env-sceau {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* ══════════════════════════════════════════════════════
-       CARTE D'INVITATION & FORMULAIRE
-    ══════════════════════════════════════════════════════ */
-    .carte {
-      position: absolute;
-      bottom: calc(-1 * var(--env-h)); /* Complètement enfouie au départ */
-      left: 50%;
-      transform: translateX(-50%) translateY(0);
-      width: calc(var(--env-w) - 16px);
-      background: linear-gradient(160deg, var(--blanc) 0%, #eef4fa 100%);
-      border-radius: 4px;
-      padding: 2.2rem 1.6rem;
-      color: var(--bleu-nuit);
-      z-index: 1;
-      opacity: 0;
-      transition: transform var(--t-card) cubic-bezier(.25, 1, .5, 1) var(--t-delay), 
-                  opacity var(--t-card) ease var(--t-delay);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    /* Extraction fluide lors de l'ouverture */
-    .scene.ouvert .carte {
-      opacity: 1;
-      position: relative;
-      bottom: auto;
-      left: auto;
-      transform: translateY(-130px); /* Ajusté pour éviter les télescopages de texte */
-      margin: 0 auto;
-      z-index: 15;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(91,174,227,0.2);
-    }
-
-    .carte::before {
-      content: '';
-      display: block;
-      width: 50px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--or), transparent);
-      margin: 0 auto 1.2rem;
-    }
-
-    .carte-header {
-      text-align: center;
-      margin-bottom: 1.6rem;
-    }
-    .carte-header h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 400;
-      font-size: 1.5rem;
-      letter-spacing: .04em;
-      color: var(--bleu-nuit);
-      line-height: 1.4;
-    }
-    .carte-header h2 em {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 300;
-      color: var(--or);
-    }
-    .carte-header p {
       font-size: .68rem;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--bleu-ciel);
-      margin-top: .5rem;
+      color: var(--texte-doux);
+      border-radius: 50%;
+      transition: background .2s;
     }
-
-    /* Champs épurés */
-    .champ {
-      position: relative;
-      margin-bottom: 1.5rem;
-      text-align: left;
-    }
-    .champ label {
-      display: block;
-      font-size: .65rem;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: #556575;
-      margin-bottom: .2rem;
-    }
-    .champ input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid rgba(10,22,40,.2);
-      padding: .6rem 0 .4rem;
-      font-family: 'Jost', sans-serif;
-      font-size: 1;
-      color: var(--bleu-nuit);
-      outline: none;
-      transition: border-color .3s ease;
-    }
-    .champ::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 0; height: 1.5px;
-      background: linear-gradient(90deg, var(--bleu-ciel), var(--or));
-      transition: width .3s ease;
-    }
-    .champ:focus-within::after {
-      width: 100%;
-    }
-
-    /* Bouton d'action tactile */
-    .btn-valider {
-      display: block;
-      width: 100%;
-      padding: 1rem;
-      margin-top: 2rem;
-      background: linear-gradient(135deg, #1a3a6b 0%, #0d2040 100%);
+    .cal-d.vide { opacity: 0; pointer-events: none; }
+    .cal-d.special {
+      background: var(--or);
       color: var(--blanc);
-      font-family: 'Jost', sans-serif;
-      font-size: .8rem;
+      font-family: 'Playfair Display', serif;
+      font-size: .85rem;
       font-weight: 500;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      border: 1px solid rgba(91,174,227,.25);
-      border-radius: 4px;
-      cursor: pointer;
-      position: relative;
-      transition: transform .15s ease;
-      min-height: 54px;
-    }
-    .btn-valider:active {
-      transform: scale(.98);
+      box-shadow: 0 4px 16px rgba(184,146,74,.45);
     }
 
-    .messages-erreur {
-      background: rgba(220,53,69,.08);
-      border: 1px solid rgba(220,53,69,.25);
-      border-radius: 4px;
-      padding: .7rem;
-      margin-bottom: 1.2rem;
-      font-size: .8rem;
-      color: #d9534f;
-      text-align: center;
-    }
-
-    /* ══════════════════════════════════════════════════════
-       INDICATEURS DE BAS DE PAGE
-    ══════════════════════════════════════════════════════ */
-    .hint {
+    /* ════════════════════════════════════════
+       PROGRAMME TIMELINE
+    ════════════════════════════════════════ */
+    .timeline {
       position: relative;
-      z-index: 2;
-      margin-top: 2rem;
-      margin-bottom: max(1rem, env(safe-area-inset-top));
-      text-align: center;
-      font-size: .68rem;
+      padding-left: 1.8rem;
+      margin-top: 1.8rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 6px; bottom: 6px;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--or-pale) 15%, var(--or-pale) 85%, transparent);
+    }
+    .tl-item {
+      position: relative;
+      padding-bottom: 2rem;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      position: absolute;
+      left: -1.8rem;
+      top: .3rem;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--or);
+      border: 2px solid var(--creme);
+      box-shadow: 0 0 0 1px var(--or-pale);
+      transform: translateX(calc(-50% + .5px));
+    }
+    .tl-time {
+      font-size: .55rem;
       letter-spacing: .18em;
       text-transform: uppercase;
-      color: rgba(168,212,240,.4);
-      flex-shrink: 0;
-      transition: opacity 0.3s ease;
-    }
-    .hint .fleche {
-      display: block;
-      font-size: 1.1rem;
-      animation: bounce .9s ease-in-out infinite;
       color: var(--or);
-      margin-bottom: .2rem;
+      margin-bottom: .18rem;
     }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-4px); }
+    .tl-event {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--brun);
+      margin-bottom: .15rem;
+    }
+    .tl-lieu {
+      font-size: .68rem;
+      color: var(--texte-doux);
+      font-weight: 300;
     }
 
-    .scene.ouvert ~ .hint {
-      opacity: 0;
-      pointer-events: none;
+    /* ════════════════════════════════════════
+       LIEU
+    ════════════════════════════════════════ */
+    .lieu-section {
+      padding: 4rem 2rem;
+      background: var(--creme-2);
+      border-top: 1px solid var(--or-pale);
+      text-align: center;
+    }
+    .lieu-icone {
+      font-size: 1.8rem;
+      margin-bottom: .8rem;
+      display: block;
+    }
+    .lieu-nom {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-style: italic;
+      color: var(--brun);
+      margin-bottom: .5rem;
+      line-height: 1.2;
+    }
+    .lieu-adresse {
+      font-size: .7rem;
+      color: var(--texte-doux);
+      line-height: 1.7;
+      margin-bottom: 1.6rem;
+      font-weight: 300;
+    }
+    .lieu-divider {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin: 1.4rem 0;
+    }
+    .lieu-divider::before, .lieu-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--or-pale);
+    }
+    .lieu-divider span {
+      font-size: .5rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--or);
+    }
+    .lieu-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      text-align: left;
+    }
+    .lieu-detail-card {
+      background: var(--blanc);
+      border: 1px solid var(--or-pale);
+      border-radius: 6px;
+      padding: 1rem .9rem;
+    }
+    .lieu-detail-icon { font-size: 1rem; margin-bottom: .4rem; display: block; }
+    .lieu-detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: .82rem;
+      color: var(--brun);
+      margin-bottom: .3rem;
+    }
+    .lieu-detail-text {
+      font-size: .64rem;
+      color: var(--texte-doux);
+      line-height: 1.6;
+      font-weight: 300;
     }
 
-    /* ══════════════════════════════════════════════════════
-       RESPONSIVE MODES
-    ══════════════════════════════════════════════════════ */
-    @media (max-width: 480px) {
-      body {
-        justify-content: flex-start;
-        padding: 1.5rem 0;
-      }
-      .titre-page { margin-bottom: 1rem; }
-      .carte { padding: 2rem 1.25rem 1.5rem; }
-      .carte-header h2 { font-size: 1.35rem; }
-      .scene.ouvert { margin-top: 1.5rem; }
+    /* ════════════════════════════════════════
+       RSVP
+    ════════════════════════════════════════ */
+    .rsvp-section {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: var(--brun);
+    }
+    .rsvp-label {
+      display: block;
+      font-size: .52rem;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: var(--or-clair);
+      margin-bottom: .6rem;
+    }
+    .rsvp-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 9vw, 2.8rem);
+      font-style: italic;
+      color: var(--creme);
+      margin-bottom: .9rem;
+      line-height: 1.1;
+      font-weight: 400;
+    }
+    .rsvp-deadline {
+      display: inline-block;
+      font-size: .55rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--or);
+      border: 1px solid rgba(184,146,74,.3);
+      padding: .38rem .9rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+    }
+    .rsvp-text {
+      font-size: .73rem;
+      color: rgba(253,248,240,.52);
+      font-weight: 300;
+      line-height: 1.85;
+      margin-bottom: 2.4rem;
+      max-width: 270px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .btn-rsvp {
+      display: inline-block;
+      padding: 1.1rem 3rem;
+      background: linear-gradient(135deg, var(--or-clair), var(--or));
+      color: var(--blanc);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .68rem;
+      font-weight: 500;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      box-shadow: 0 8px 32px rgba(184,146,74,.35);
+      transition: transform .2s ease, box-shadow .2s ease;
+      min-width: 220px;
+      cursor: pointer;
+    }
+    .btn-rsvp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(184,146,74,.5);
+    }
+    .btn-rsvp:active { transform: translateY(0); }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    footer {
+      padding: 2.4rem 2rem;
+      text-align: center;
+      background: #1a120a;
+    }
+    .footer-names {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--or-pale);
+      margin-bottom: .35rem;
+    }
+    .footer-date {
+      font-size: .52rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(236,223,200,.3);
+    }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 360px) {
+      .cd-num { font-size: 1.6rem; }
+      .lieu-details { grid-template-columns: 1fr; }
+    }
+    @supports (padding: max(0px)) {
+      body { padding-bottom: env(safe-area-inset-bottom); }
     }
   </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
+<!-- ════════════════════════════════════════
+     HERO — PHOTO PLEINE PAGE
+════════════════════════════════════════ -->
+<section class="hero">
 
-<div class="titre-page">
-  <h1>L'Invitation</h1>
-  <span class="trait-or"></span>
-  <p>Mariage &nbsp;·&nbsp; Accès Personnel</p>
-</div>
+  <!--
+    ╔══════════════════════════════════════════╗
+    ║  REMPLACE src="" PAR L'URL DE TA PHOTO  ║
+    ║  ex: src="https://i.imgur.com/xxx.jpg"  ║
+    ╚══════════════════════════════════════════╝
+  -->
+  <img
+    src="src="https://i.imgur.com/vrtCuPh.jpeg""
+    alt="Eva & Gloria"
+    class="hero-photo"
+    id="hero-photo"
+  />
 
-<div class="scene" id="scene">
-  <div class="enveloppe" id="enveloppe">
+  <div class="hero-overlay"></div>
 
-    <div class="env-fond-interieur"></div>
-
-    <div class="carte" id="carte">
-      <div class="carte-header">
-        <h2>Gloria & Eva<br><em>vous invitent</em></h2>
-        <p>Veuillez entrer vos accès</p>
-      </div>
-
-      {% if messages %}
-        <div class="messages-erreur">
-          {% for message in messages %}{{ message }}{% endfor %}
-        </div>
-      {% endif %}
-
-      <form method="POST" action="{% url 'connexion' %}">
-        {% csrf_token %}
-
-        <div class="champ">
-          <label for="nom">Nom de la famille</label>
-          <input
-            type="text"
-            id="nom"
-            name="nom"
-            placeholder="Votre nom..."
-            autocomplete="family-name"
-            autocorrect="off"
-            autocapitalize="characters"
-            required
-          />
-        </div>
-
-        <div class="champ">
-          <label for="code_invitation">Code d'invitation</label>
-          <input
-            type="text"
-            id="code_invitation"
-            name="code_invitation"
-            placeholder="Ex : MRG-2026-049"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="characters"
-            required
-          />
-        </div>
-
-        <button type="submit" class="btn-valider">
-          Découvrir mon invitation &nbsp;→
-        </button>
-      </form>
-    </div>
-
-    <div class="env-poche-avant">
-      <div class="env-bord-bas"></div>
-    </div>
-
-    <div class="env-rabat">
-      <div class="env-rabat-face"></div>
-    </div>
-
-    <div class="env-sceau" id="sceau" role="button" aria-label="Ouvrir l'invitation" tabindex="0">
-      <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 3 L27 12 L27 27 L3 27 L3 12 Z" stroke="#080c10" stroke-width="1.2" fill="none"/>
-        <path d="M3 12 L15 20 L27 12" stroke="#080c10" stroke-width="1.2" fill="none"/>
-        <circle cx="15" cy="3" r="1.5" fill="#080c10"/>
-      </svg>
-    </div>
-
+  <div class="hero-content">
+    <span class="hero-label">Save the Date</span>
+    <h1 class="hero-names">
+      Eva
+      <span class="ampersand">&amp;</span>
+      Gloria
+    </h1>
+    <span class="trait-or"></span>
+    <p class="hero-date">Samedi &nbsp;·&nbsp; 15 Août 2026 &nbsp;·&nbsp; 15h30</p>
   </div>
-</div>
 
-<p class="hint" id="hint">
-  <span class="fleche">↑</span>
-  Appuyez sur le sceau pour ouvrir
-</p>
+  <div class="scroll-hint">
+    <span>Découvrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     COMPTE À REBOURS
+════════════════════════════════════════ -->
+<section class="countdown-section">
+  <span class="cd-label reveal">Le grand jour dans</span>
+  <p class="cd-title reveal reveal-delay-1">Nous vous attendons avec impatience</p>
+  <div class="cd-grid">
+    <div class="cd-card reveal reveal-delay-1">
+      <span class="cd-num" id="cd-j">00</span>
+      <span class="cd-unit">Jours</span>
+    </div>
+    <div class="cd-card reveal reveal-delay-2">
+      <span class="cd-num" id="cd-h">00</span>
+      <span class="cd-unit">Heures</span>
+    </div>
+    <div class="cd-card reveal reveal-delay-3">
+      <span class="cd-num" id="cd-m">00</span>
+      <span class="cd-unit">Minutes</span>
+    </div>
+    <div class="cd-card reveal reveal-delay-4">
+      <span class="cd-num" id="cd-s">00</span>
+      <span class="cd-unit">Secondes</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     CALENDRIER
+════════════════════════════════════════ -->
+<section class="cal-section">
+  <span class="section-label reveal">La date</span>
+  <h2 class="section-title reveal reveal-delay-1">Août 2026</h2>
+
+  <div class="cal-grid reveal reveal-delay-2">
+    <div class="cal-dn">L</div><div class="cal-dn">M</div>
+    <div class="cal-dn">M</div><div class="cal-dn">J</div>
+    <div class="cal-dn">V</div><div class="cal-dn">S</div>
+    <div class="cal-dn">D</div>
+    <!-- Août 2026 commence un samedi -->
+    <div class="cal-d vide"></div><div class="cal-d vide"></div>
+    <div class="cal-d vide"></div><div class="cal-d vide"></div>
+    <div class="cal-d vide"></div>
+    <div class="cal-d">1</div><div class="cal-d">2</div>
+    <div class="cal-d">3</div><div class="cal-d">4</div>
+    <div class="cal-d">5</div><div class="cal-d">6</div>
+    <div class="cal-d">7</div><div class="cal-d">8</div>
+    <div class="cal-d">9</div><div class="cal-d">10</div>
+    <div class="cal-d">11</div><div class="cal-d">12</div>
+    <div class="cal-d">13</div><div class="cal-d">14</div>
+    <div class="cal-d special">15</div>
+    <div class="cal-d">16</div><div class="cal-d">17</div>
+    <div class="cal-d">18</div><div class="cal-d">19</div>
+    <div class="cal-d">20</div><div class="cal-d">21</div>
+    <div class="cal-d">22</div><div class="cal-d">23</div>
+    <div class="cal-d">24</div><div class="cal-d">25</div>
+    <div class="cal-d">26</div><div class="cal-d">27</div>
+    <div class="cal-d">28</div><div class="cal-d">29</div>
+    <div class="cal-d">30</div><div class="cal-d">31</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     PROGRAMME
+════════════════════════════════════════ -->
+<section class="section">
+  <span class="section-label reveal">Déroulement</span>
+  <h2 class="section-title reveal reveal-delay-1">Programme</h2>
+
+  <div class="timeline">
+    <div class="tl-item reveal reveal-delay-1">
+      <div class="tl-dot"></div>
+      <p class="tl-time">15h30</p>
+      <p class="tl-event">Cérémonie</p>
+      <p class="tl-lieu">Hôtel Gloria, Kinshasa</p>
+    </div>
+    <div class="tl-item reveal reveal-delay-2">
+      <div class="tl-dot"></div>
+      <p class="tl-time">16h30</p>
+      <p class="tl-event">Cocktail de bienvenue</p>
+      <p class="tl-lieu">Terrasse de l'Hôtel Gloria</p>
+    </div>
+    <div class="tl-item reveal reveal-delay-3">
+      <div class="tl-dot"></div>
+      <p class="tl-time">17h00</p>
+      <p class="tl-event">Séance photo</p>
+      <p class="tl-lieu">Jardins de l'Hôtel Gloria</p>
+    </div>
+    <div class="tl-item reveal reveal-delay-4">
+      <div class="tl-dot"></div>
+      <p class="tl-time">19h00</p>
+      <p class="tl-event">Dîner de gala</p>
+      <p class="tl-lieu">Grande salle — Hôtel Gloria</p>
+    </div>
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <p class="tl-time">21h00</p>
+      <p class="tl-event">Soirée dansante</p>
+      <p class="tl-lieu">Jusqu'au bout de la nuit 🎉</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     LIEU — HÔTEL GLORIA
+════════════════════════════════════════ -->
+<section class="lieu-section">
+  <span class="section-label reveal">Où nous rejoindre</span>
+  <span class="lieu-icone reveal reveal-delay-1">🏨</span>
+  <h2 class="lieu-nom reveal reveal-delay-2">Hôtel Gloria</h2>
+  <p class="lieu-adresse reveal reveal-delay-3">
+    Avenue de la Paix, Commune de la Gombe<br/>
+    Kinshasa, République Démocratique du Congo
+  </p>
+
+  <div class="lieu-divider reveal reveal-delay-4">
+    <span>Infos pratiques</span>
+  </div>
+
+  <div class="lieu-details">
+    <div class="lieu-detail-card reveal reveal-delay-1">
+      <span class="lieu-detail-icon">👗</span>
+      <p class="lieu-detail-title">Dress Code</p>
+      <p class="lieu-detail-text">Tenue de soirée élégante. Touche de couleur bienvenue.</p>
+    </div>
+    <div class="lieu-detail-card reveal reveal-delay-2">
+      <span class="lieu-detail-icon">🚌</span>
+      <p class="lieu-detail-title">Transport</p>
+      <p class="lieu-detail-text">Navettes disponibles pour les invités venant de loin.</p>
+    </div>
+    <div class="lieu-detail-card reveal reveal-delay-3">
+      <span class="lieu-detail-icon">📸</span>
+      <p class="lieu-detail-title">Photos</p>
+      <p class="lieu-detail-text">Partagez avec #EvaEtGloria2026</p>
+    </div>
+    <div class="lieu-detail-card reveal reveal-delay-4">
+      <span class="lieu-detail-icon">🎁</span>
+      <p class="lieu-detail-title">Cadeaux</p>
+      <p class="lieu-detail-text">Votre présence est notre plus beau cadeau.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     RSVP
+════════════════════════════════════════ -->
+<section class="rsvp-section">
+  <span class="rsvp-label reveal">Confirmez votre venue</span>
+  <h2 class="rsvp-title reveal reveal-delay-1">RSVP</h2>
+  <span class="rsvp-deadline reveal reveal-delay-2">Avant le 1er Août 2026</span>
+  <p class="rsvp-text reveal reveal-delay-3">
+    Merci de confirmer votre présence afin que nous puissions vous accueillir dans les meilleures conditions.
+  </p>
+  <!--
+    ╔══════════════════════════════════════════════════════╗
+    ║  LIEN RSVP — pointe vers ton site Railway           ║
+    ╚══════════════════════════════════════════════════════╝
+  -->
+  <a
+    href="https://rsvp-mariage-production.up.railway.app/"
+    class="btn-rsvp reveal reveal-delay-4"
+  >
+    Confirmer ma présence
+  </a>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <p class="footer-names">Eva &amp; Gloria</p>
+  <p class="footer-date">15 · 08 · 2026 &nbsp;·&nbsp; Hôtel Gloria · Kinshasa</p>
+</footer>
+
 
 <script>
-  /* GÉNÉRATEUR DE SINTILLES */
-  (function() {
-    const container = document.getElementById('stars');
-    const count = 30;
-    for (let i = 0; i < count; i++) {
-      const s = document.createElement('span');
-      const size = Math.random() * 2 + 1;
-      s.style.cssText = `
-        width: ${size}px; height: ${size}px;
-        top: ${Math.random() * 100}%;
-        left: ${Math.random() * 100}%;
-        --dur: ${Math.random() * 3 + 2}s;
-        --delay: ${Math.random() * 4}s;
-      `;
-      container.appendChild(s);
-    }
-  })();
+  /* ══════════════════════════════════════════
+     PHOTO HERO — Fallback élégant si pas d'image
+  ══════════════════════════════════════════ */
+  const heroPhoto = document.getElementById('hero-photo');
 
-  /* ANIMATION AU CLIC */
-  const scene = document.getElementById('scene');
-  const sceau = document.getElementById('sceau');
-  let ouvert = false;
+  heroPhoto.onerror = function() {
+    /* Si l'image ne charge pas : fond dégradé */
+    this.style.display = 'none';
+    document.querySelector('.hero').style.background =
+      'linear-gradient(160deg, #2c1f0e 0%, #5c4a32 50%, #b8924a 100%)';
+  };
 
-  function ouvrirEnveloppe() {
-    if (ouvert) return;
-    ouvert = true;
+  /* Si src vide au départ : applique le fallback directement */
+  if (!heroPhoto.getAttribute('src')) {
+    heroPhoto.style.display = 'none';
+    document.querySelector('.hero').style.background =
+      'linear-gradient(160deg, #2c1f0e 0%, #5c4a32 45%, #b8924a 100%)';
 
-    scene.classList.add('ouvert');
-
-    // On libère le défilement vertical une fois l'animation de sortie achevée
-    setTimeout(() => {
-      document.body.style.overflowY = 'auto';
-    }, 1200);
+    /* Affiche initiales au centre du hero */
+    const initDiv = document.createElement('div');
+    initDiv.style.cssText = `
+      position:absolute; inset:0; z-index:1;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+    `;
+    initDiv.innerHTML = `
+      <div style="
+        width:160px;height:160px;border-radius:50%;
+        background:rgba(255,255,255,.08);
+        border:1px solid rgba(212,172,110,.35);
+        display:flex;align-items:center;justify-content:center;
+        font-family:'Playfair Display',serif;font-size:2.8rem;
+        color:rgba(212,172,110,.7);font-style:italic;
+        backdrop-filter:blur(4px);
+      ">E &amp; G</div>
+      <p style="
+        margin-top:1rem;font-size:.58rem;letter-spacing:.25em;
+        text-transform:uppercase;color:rgba(236,223,200,.4);
+        font-family:'Montserrat',sans-serif;
+      ">Votre photo ici</p>
+    `;
+    document.querySelector('.hero').appendChild(initDiv);
   }
 
-  sceau.addEventListener('click', ouvrirEnveloppe);
-  sceau.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      ouvrirEnveloppe();
-    }
-  });
+  /* ══════════════════════════════════════════
+     COMPTE À REBOURS
+     ══ MODIFIE cette date pour ton mariage ══
+  ══════════════════════════════════════════ */
+  const weddingDate = new Date('2026-08-15T15:30:00');
 
-  /* COMPORTEMENT SI RETOUR D'ERREUR DJANGO */
-  {% if messages %}
-  window.addEventListener('DOMContentLoaded', () => {
-    scene.classList.add('ouvert');
-    document.body.style.overflowY = 'auto';
-  });
-  {% endif %}
+  function updateCountdown() {
+    const diff = weddingDate - new Date();
+    if (diff <= 0) {
+      ['cd-j','cd-h','cd-m','cd-s'].forEach(id =>
+        document.getElementById(id).textContent = '00'
+      );
+      return;
+    }
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('cd-j').textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById('cd-h').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ══════════════════════════════════════════
+     SCROLL REVEAL
+  ══════════════════════════════════════════ */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
 </body>
