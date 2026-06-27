@@ -67,8 +67,8 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center top;
+      object-fit: contain;
+      object-position: center;
       display: block;
     }
 
@@ -484,6 +484,74 @@
     }
     .btn-rsvp:active { transform: translateY(0); }
 
+    .form-invitation {
+      max-width: 420px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .form-invitation .champ {
+      margin-bottom: 1.15rem;
+    }
+    .form-invitation .champ label {
+      display: block;
+      font-size: .62rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--or);
+      margin-bottom: .45rem;
+    }
+    .form-invitation .champ input {
+      width: 100%;
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 4px;
+      padding: .95rem 1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--brun);
+      outline: none;
+      transition: border-color .25s ease, box-shadow .25s ease;
+    }
+    .form-invitation .champ input:focus {
+      border-color: rgba(255,255,255,.9);
+      box-shadow: 0 0 0 4px rgba(255,255,255,.12);
+    }
+    .form-invitation .messages-erreur {
+      margin-bottom: 1.5rem;
+      background: rgba(160,48,48,.08);
+      border: 1px solid rgba(160,48,48,.22);
+      color: #e0c4c4;
+      border-radius: 6px;
+      padding: 1rem 1rem;
+      font-size: .78rem;
+      line-height: 1.5;
+    }
+    .btn-valider {
+      display: block;
+      width: 100%;
+      padding: 1rem 1.1rem;
+      background: linear-gradient(135deg, var(--or-clair), var(--or));
+      color: var(--blanc);
+      font-family: 'Montserrat', sans-serif;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+      box-shadow: 0 14px 32px rgba(184,146,74,.25);
+    }
+    .btn-valider:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 44px rgba(184,146,74,.32);
+      opacity: .98;
+    }
+    .btn-valider:active {
+      transform: translateY(0);
+    }
+
     /* ════════════════════════════════════════
        FOOTER
     ════════════════════════════════════════ */
@@ -525,14 +593,8 @@
 ════════════════════════════════════════ -->
 <section class="hero">
 
-  <!--
-    ╔══════════════════════════════════════════╗
-    ║  REMPLACE src="" PAR L'URL DE TA PHOTO  ║
-    ║  ex: src="https://i.imgur.com/xxx.jpg"  ║
-    ╚══════════════════════════════════════════╝
-  -->
   <img
-    src="src="https://i.imgur.com/vrtCuPh.jpeg""
+    src="https://i.imgur.com/vrtCuPh.jpeg"
     alt="Eva & Gloria"
     class="hero-photo"
     id="hero-photo"
@@ -548,7 +610,7 @@
       Gloria
     </h1>
     <span class="trait-or"></span>
-    <p class="hero-date">Samedi &nbsp;·&nbsp; 15 Août 2026 &nbsp;·&nbsp; 15h30</p>
+    <p class="hero-date">Samedi &nbsp;·&nbsp; 03 Octobre 2026 &nbsp;·&nbsp; 18h30</p>
   </div>
 
   <div class="scroll-hint">
@@ -595,18 +657,16 @@
     <div class="cal-dn">M</div><div class="cal-dn">J</div>
     <div class="cal-dn">V</div><div class="cal-dn">S</div>
     <div class="cal-dn">D</div>
-    <!-- Août 2026 commence un samedi -->
-    <div class="cal-d vide"></div><div class="cal-d vide"></div>
-    <div class="cal-d vide"></div><div class="cal-d vide"></div>
-    <div class="cal-d vide"></div>
+    <!-- Octobre 2026 commence un jeudi (premier samedi = 3) -->
+    <div class="cal-d vide"></div><div class="cal-d vide"></div><div class="cal-d vide"></div>
     <div class="cal-d">1</div><div class="cal-d">2</div>
-    <div class="cal-d">3</div><div class="cal-d">4</div>
-    <div class="cal-d">5</div><div class="cal-d">6</div>
-    <div class="cal-d">7</div><div class="cal-d">8</div>
-    <div class="cal-d">9</div><div class="cal-d">10</div>
-    <div class="cal-d">11</div><div class="cal-d">12</div>
-    <div class="cal-d">13</div><div class="cal-d">14</div>
-    <div class="cal-d special">15</div>
+    <div class="cal-d special">3</div>
+    <div class="cal-d">4</div><div class="cal-d">5</div>
+    <div class="cal-d">6</div><div class="cal-d">7</div>
+    <div class="cal-d">8</div><div class="cal-d">9</div>
+    <div class="cal-d">10</div><div class="cal-d">11</div>
+    <div class="cal-d">12</div><div class="cal-d">13</div>
+    <div class="cal-d">14</div><div class="cal-d">15</div>
     <div class="cal-d">16</div><div class="cal-d">17</div>
     <div class="cal-d">18</div><div class="cal-d">19</div>
     <div class="cal-d">20</div><div class="cal-d">21</div>
@@ -628,27 +688,27 @@
   <div class="timeline">
     <div class="tl-item reveal reveal-delay-1">
       <div class="tl-dot"></div>
-      <p class="tl-time">15h30</p>
+      <p class="tl-time">18h30</p>
       <p class="tl-event">Cérémonie</p>
-      <p class="tl-lieu">Hôtel Gloria, Kinshasa</p>
+      <p class="tl-lieu">Hôtel Gloria, Avenue Salongo — Mbuji-Mayi</p>
     </div>
     <div class="tl-item reveal reveal-delay-2">
       <div class="tl-dot"></div>
-      <p class="tl-time">16h30</p>
+      <p class="tl-time">19h30</p>
       <p class="tl-event">Cocktail de bienvenue</p>
-      <p class="tl-lieu">Terrasse de l'Hôtel Gloria</p>
+      <p class="tl-lieu">Terrasse de l'Hôtel Gloria — Mbuji-Mayi</p>
     </div>
     <div class="tl-item reveal reveal-delay-3">
       <div class="tl-dot"></div>
-      <p class="tl-time">17h00</p>
+      <p class="tl-time">20h00</p>
       <p class="tl-event">Séance photo</p>
-      <p class="tl-lieu">Jardins de l'Hôtel Gloria</p>
+      <p class="tl-lieu">Jardins de l'Hôtel Gloria — Mbuji-Mayi</p>
     </div>
     <div class="tl-item reveal reveal-delay-4">
       <div class="tl-dot"></div>
-      <p class="tl-time">19h00</p>
+      <p class="tl-time">21h00</p>
       <p class="tl-event">Dîner de gala</p>
-      <p class="tl-lieu">Grande salle — Hôtel Gloria</p>
+      <p class="tl-lieu">Grande salle — Hôtel Gloria, Mbuji-Mayi</p>
     </div>
     <div class="tl-item reveal">
       <div class="tl-dot"></div>
@@ -664,11 +724,14 @@
 ════════════════════════════════════════ -->
 <section class="lieu-section">
   <span class="section-label reveal">Où nous rejoindre</span>
-  <span class="lieu-icone reveal reveal-delay-1">🏨</span>
+  <span class="lieu-icone reveal reveal-delay-1" aria-hidden="true">
+    <!-- pictogramme hôtel discret -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 21h18v-2H3v2zM7 10V7a1 1 0 0 1 1-1h2v4H7zm8 0V6h2a1 1 0 0 1 1 1v3h-3zM5 21V11h14v10H5z" fill="#b8924a"/></svg>
+  </span>
   <h2 class="lieu-nom reveal reveal-delay-2">Hôtel Gloria</h2>
   <p class="lieu-adresse reveal reveal-delay-3">
-    Avenue de la Paix, Commune de la Gombe<br/>
-    Kinshasa, République Démocratique du Congo
+    Avenue Salongo, Commune de la Kanshi<br/>
+    Mbuji-Mayi, République démocratique du Congo
   </p>
 
   <div class="lieu-divider reveal reveal-delay-4">
@@ -682,16 +745,11 @@
       <p class="lieu-detail-text">Tenue de soirée élégante. Touche de couleur bienvenue.</p>
     </div>
     <div class="lieu-detail-card reveal reveal-delay-2">
-      <span class="lieu-detail-icon">🚌</span>
-      <p class="lieu-detail-title">Transport</p>
-      <p class="lieu-detail-text">Navettes disponibles pour les invités venant de loin.</p>
-    </div>
-    <div class="lieu-detail-card reveal reveal-delay-3">
       <span class="lieu-detail-icon">📸</span>
       <p class="lieu-detail-title">Photos</p>
-      <p class="lieu-detail-text">Partagez avec #EvaEtGloria2026</p>
+      <p class="lieu-detail-text">Partagez vos photos avec #EvaEtGloria2026</p>
     </div>
-    <div class="lieu-detail-card reveal reveal-delay-4">
+    <div class="lieu-detail-card reveal reveal-delay-3">
       <span class="lieu-detail-icon">🎁</span>
       <p class="lieu-detail-title">Cadeaux</p>
       <p class="lieu-detail-text">Votre présence est notre plus beau cadeau.</p>
@@ -705,21 +763,49 @@
 <section class="rsvp-section">
   <span class="rsvp-label reveal">Confirmez votre venue</span>
   <h2 class="rsvp-title reveal reveal-delay-1">RSVP</h2>
-  <span class="rsvp-deadline reveal reveal-delay-2">Avant le 1er Août 2026</span>
+  <span class="rsvp-deadline reveal reveal-delay-2">Avant le 1er Octobre 2026</span>
   <p class="rsvp-text reveal reveal-delay-3">
     Merci de confirmer votre présence afin que nous puissions vous accueillir dans les meilleures conditions.
   </p>
   <!--
     ╔══════════════════════════════════════════════════════╗
-    ║  LIEN RSVP — pointe vers ton site Railway           ║
+    ║  LIEN INVITATION — garde le visiteur dans le site     ║
     ╚══════════════════════════════════════════════════════╝
   -->
-  <a
-    href="https://rsvp-mariage-production.up.railway.app/"
-    class="btn-rsvp reveal reveal-delay-4"
-  >
-    Confirmer ma présence
-  </a>
+  {% if messages %}
+    <div class="messages-erreur reveal reveal-delay-3">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="POST" action="{% url 'connexion' %}" class="form-invitation reveal reveal-delay-4">
+    {% csrf_token %}
+
+    <div class="champ">
+      <label for="nom">Nom de famille</label>
+      <input
+        type="text" id="nom" name="nom"
+        placeholder="Votre nom..."
+        autocomplete="family-name"
+        autocorrect="off" autocapitalize="characters" required
+      />
+    </div>
+
+    <div class="champ">
+      <label for="code_invitation">Code d'invitation</label>
+      <input
+        type="text" id="code_invitation" name="code_invitation"
+        placeholder="Ex : MRG-2026-001"
+        autocomplete="off" autocorrect="off" autocapitalize="characters" required
+      />
+    </div>
+
+    <button type="submit" class="btn-valider">
+      Confirmer ma présence
+    </button>
+  </form>
 </section>
 
 <!-- ════════════════════════════════════════
@@ -727,7 +813,7 @@
 ════════════════════════════════════════ -->
 <footer>
   <p class="footer-names">Eva &amp; Gloria</p>
-  <p class="footer-date">15 · 08 · 2026 &nbsp;·&nbsp; Hôtel Gloria · Kinshasa</p>
+  <p class="footer-date">03 · 10 · 2026 &nbsp;·&nbsp; Hôtel Gloria · Mbuji-Mayi</p>
 </footer>
 
 
@@ -780,7 +866,7 @@
      COMPTE À REBOURS
      ══ MODIFIE cette date pour ton mariage ══
   ══════════════════════════════════════════ */
-  const weddingDate = new Date('2026-08-15T15:30:00');
+  const weddingDate = new Date('2026-10-03T18:30:00');
 
   function updateCountdown() {
     const diff = weddingDate - new Date();

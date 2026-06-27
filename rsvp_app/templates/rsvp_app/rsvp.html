@@ -12,32 +12,32 @@
 
   <style>
     /* ══════════════════════════════════════════════════════
-       VARIABLES (identiques à connexion.html — cohérence)
+       VARIABLES (adaptées au style de connexion.html)
     ══════════════════════════════════════════════════════ */
     :root {
-      --noir:       #080c10;
-      --bleu-nuit:  #0a1628;
-      --bleu-ciel:  #5baee3;
-      --bleu-clair: #a8d4f0;
-      --or:         #c9a84c;
-      --or-clair:   #e8cf8a;
-      --blanc:      #f7f4ef;
+      --creme:      #fdf8f0;
+      --creme-2:    #f5ede0;
+      --or:         #b8924a;
+      --or-clair:   #d4ac6e;
+      --or-pale:    #ecdfc8;
+      --brun:       #2c1f0e;
+      --brun-doux:  #5c4a32;
+      --texte:      #3a2e22;
+      --texte-doux: #7a6a56;
+      --blanc:      #ffffff;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100dvh;
-      background: var(--noir);
-      background-image:
-        radial-gradient(ellipse at 15% 20%, rgba(91,174,227,.07) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 80%, rgba(201,168,76,.05) 0%, transparent 50%);
+      background: var(--creme);
       font-family: 'Jost', sans-serif;
-      color: var(--blanc);
+      color: var(--brun);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem 1rem 3rem;
+      padding: 1.8rem 1rem 2.5rem;
     }
 
     /* ══════════════════════════════════════════════════════
@@ -45,36 +45,39 @@
     ══════════════════════════════════════════════════════ */
     .page-header {
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.8rem;
       animation: fadeDown .7s ease both;
     }
     .page-header .trait-or {
       display: block;
-      width: 50px;
+      width: 40px;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--or), transparent);
-      margin: .5rem auto .8rem;
+      margin: .5rem auto .9rem;
     }
     .page-header .surtitre {
-      font-size: .65rem;
-      letter-spacing: .25em;
+      display: block;
+      font-size: .62rem;
+      letter-spacing: .28em;
       text-transform: uppercase;
-      color: var(--bleu-clair);
+      color: var(--or);
+      margin-bottom: .5rem;
     }
     .page-header h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: clamp(1.6rem, 6vw, 2.2rem);
-      letter-spacing: .04em;
+      font-weight: 400;
+      font-size: clamp(1.8rem, 6vw, 2.4rem);
+      letter-spacing: .02em;
       line-height: 1.2;
+      color: var(--brun);
     }
     .page-header h1 em {
       font-style: italic;
-      color: var(--bleu-clair);
+      color: var(--brun-doux);
     }
 
     @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-14px); }
+      from { opacity: 0; transform: translateY(-18px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
@@ -83,30 +86,27 @@
     ══════════════════════════════════════════════════════ */
     .carte-rsvp {
       width: 100%;
-      max-width: 440px; /* Légèrement augmenté pour le confort visuel */
-      background: linear-gradient(160deg, #0d2040 0%, #060e1a 100%);
-      border: 1px solid rgba(91,174,227,.18);
-      border-radius: 12px; /* Coins un peu plus adoucis et modernes */
-      padding: 2.5rem 2rem;
-      box-shadow:
-        0 30px 60px rgba(0,0,0,.6),
-        0 0 40px rgba(91,174,227,.04),
-        inset 0 1px 0 rgba(255,255,255,.05);
-      animation: fadeUp .8s cubic-bezier(.22,.68,0,1.2) .15s both;
+      max-width: 460px;
+      background: var(--creme-2);
+      border: 1px solid rgba(184,146,74,.25);
+      border-radius: 16px;
+      padding: 2.4rem 1.9rem;
+      box-shadow: 0 28px 60px rgba(44,31,14,.12);
+      animation: fadeUp .8s cubic-bezier(.22,.68,0,1.2) .12s both;
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     .carte-rsvp::before {
       content: '';
       display: block;
-      width: 40px;
+      width: 42px;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--or), transparent);
-      margin: 0 auto 1.5rem;
+      margin: 0 auto 1.6rem;
     }
 
     /* ══════════════════════════════════════════════════════
@@ -165,84 +165,69 @@
     }
 
     .btn-choix {
-      min-height: 90px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 92px;
+      border-radius: 14px;
+      border: 1px solid rgba(184,146,74,.35);
       cursor: pointer;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0.5rem;
+      padding: 1rem 1.1rem;
       font-family: 'Jost', sans-serif;
-      font-weight: 500;
-      font-size: .78rem;
-      letter-spacing: .12em;
+      font-weight: 600;
+      font-size: .82rem;
+      letter-spacing: .15em;
       text-transform: uppercase;
-      transition: all .25s cubic-bezier(0.25, 0.8, 0.25, 1);
+      color: var(--brun);
+      background: rgba(255,255,255,.95);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
       position: relative;
       overflow: hidden;
-      -webkit-tap-highlight-color: transparent;
+      line-height: 1.2;
     }
 
-    /* Petite pastille radio factice en haut à droite pour guider l'utilisateur */
-    .btn-choix::after {
+    .btn-choix::before {
       content: '';
       position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      transition: all 0.25s ease;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(184,146,74,.06), transparent 75%);
+      opacity: 0;
+      transition: opacity .25s ease;
     }
+    .btn-choix:hover::before { opacity: 1; }
 
-    /* — Bouton PRÉSENT — */
     .btn-present {
-      background: linear-gradient(135deg, #092416 0%, #04120b 100%);
-      color: rgba(126, 232, 156, 0.7);
+      border-color: rgba(184,146,74,.35);
+      color: var(--brun);
     }
     .btn-present:hover {
-      border-color: rgba(40,167,69, 0.4);
-      color: #7ee89c;
+      border-color: var(--or);
       transform: translateY(-2px);
     }
     .btn-present.actif {
-      background: linear-gradient(135deg, #0d3d24 0%, #061f12 100%);
-      border-color: #28a745;
-      color: #ffffff;
-      box-shadow: 0 0 20px rgba(40,167,69,.25), inset 0 0 10px rgba(40,167,69,0.2);
-    }
-    .btn-present.actif::after {
-      background: #28a745;
-      border-color: #28a745;
-      box-shadow: 0 0 8px #28a745;
+      background: linear-gradient(135deg, rgba(184,146,74,.15), rgba(184,146,74,.06));
+      border-color: var(--or);
+      color: var(--brun);
+      box-shadow: 0 12px 28px rgba(184,146,74,.14);
     }
 
-    /* — Bouton ABSENT — */
     .btn-absent {
-      background: linear-gradient(135deg, #240909 0%, #120404 100%);
-      color: rgba(232, 126, 140, 0.7);
+      border-color: rgba(184,146,74,.25);
+      color: var(--brun-doux);
     }
     .btn-absent:hover {
-      border-color: rgba(220,53,69, 0.4);
-      color: #e87e8c;
+      border-color: rgba(184,146,74,.55);
       transform: translateY(-2px);
     }
     .btn-absent.actif {
-      background: linear-gradient(135deg, #421010 0%, #240808 100%);
-      border-color: #dc3545;
-      color: #ffffff;
-      box-shadow: 0 0 20px rgba(220,53,69,.22), inset 0 0 10px rgba(220,53,69,0.2);
-    }
-    .btn-absent.actif::after {
-      background: #dc3545;
-      border-color: #dc3545;
-      box-shadow: 0 0 8px #dc3545;
+      background: rgba(255,255,255,.92);
+      border-color: rgba(184,146,74,.55);
+      color: var(--brun);
+      box-shadow: 0 12px 28px rgba(184,146,74,.14);
     }
 
-    .btn-choix:active { transform: scale(.96); }
+    .btn-choix:active { transform: scale(.98); }
 
     /* ══════════════════════════════════════════════════════
        SECTION BOISSONS
@@ -251,10 +236,10 @@
       max-height: 0;
       opacity: 0;
       overflow: hidden;
-      transition: max-height .5s cubic-bezier(.22,.68,0,1.1), opacity .4s ease;
+      transition: max-height .4s cubic-bezier(.22,.68,0,1.1), opacity .35s ease;
     }
     .section-boissons.visible {
-      max-height: 600px;
+      max-height: 560px;
       opacity: 1;
     }
 
@@ -266,60 +251,60 @@
       font-family: 'Cormorant Garamond', serif;
       font-weight: 400;
       font-size: 1.15rem;
-      color: rgba(247,244,239,.85);
+      color: var(--brun);
     }
     .boissons-titre p {
-      font-size: .65rem;
+      font-size: .72rem;
       letter-spacing: .18em;
       text-transform: uppercase;
-      color: rgba(168,212,240,.45);
+      color: var(--texte-doux);
       margin-top: .3rem;
     }
 
     .grille-boissons {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: .7rem;
+      gap: .85rem;
       margin-bottom: 1.6rem;
     }
 
     .btn-boisson {
-      padding: .9rem .6rem;
-      border-radius: 6px;
-      border: 1px solid rgba(91,174,227,.15);
-      background: rgba(91,174,227,.03);
-      color: var(--bleu-clair);
+      padding: 1rem .85rem;
+      border-radius: 14px;
+      border: 1px solid rgba(184,146,74,.2);
+      background: rgba(255,255,255,.92);
+      color: var(--brun);
       font-family: 'Jost', sans-serif;
-      font-size: .75rem;
+      font-size: .85rem;
       letter-spacing: .08em;
       cursor: pointer;
-      transition: all .2s ease;
+      transition: all .22s ease;
       display: flex;
-      flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: .4rem;
       -webkit-tap-highlight-color: transparent;
       position: relative;
     }
-    .btn-boisson .boisson-icone { font-size: 1.4rem; }
+    .btn-boisson .boisson-icone { display: none; }
     .btn-boisson:hover {
-      background: rgba(91,174,227,.08);
-      border-color: rgba(91,174,227,.35);
+      background: rgba(255,255,255,.98);
+      border-color: rgba(184,146,74,.4);
       transform: translateY(-1px);
     }
     .btn-boisson.selectionne {
-      background: rgba(91,174,227,.15);
-      border-color: var(--bleu-ciel);
-      color: var(--blanc);
-      box-shadow: 0 0 12px rgba(91,174,227,.15);
+      background: var(--or-pale);
+      border-color: rgba(184,146,74,.45);
+      color: var(--brun);
+      box-shadow: 0 10px 24px rgba(184,146,74,.12);
     }
     .btn-boisson.selectionne::after {
-      content: '✓';
+      content: '✔';
       position: absolute;
-      top: 6px;
-      right: 8px;
-      font-size: .65rem;
-      color: var(--or);
+      top: 10px;
+      right: 10px;
+      font-size: .75rem;
+      color: var(--brun);
       font-weight: bold;
     }
 
@@ -354,31 +339,30 @@
     .btn-confirmer {
       display: block;
       width: 100%;
-      padding: 1.1rem;
-      background: linear-gradient(135deg, #1a3a6b 0%, #0d2040 100%);
+      padding: 1.15rem;
+      background: linear-gradient(135deg, var(--or), var(--or-clair));
       color: var(--blanc);
-      font-family: 'Jost', sans-serif;
-      font-size: .8rem;
-      font-weight: 500;
-      letter-spacing: .25em;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .22em;
       text-transform: uppercase;
-      border: 1px solid rgba(91,174,227,.3);
-      border-radius: 4px;
+      border: 1px solid rgba(184,146,74,.35);
+      border-radius: 14px;
       cursor: pointer;
-      min-height: 54px;
-      position: relative;
-      overflow: hidden;
-      transition: all .2s ease;
+      min-height: 56px;
+      box-shadow: 0 18px 36px rgba(184,146,74,.15);
+      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
     }
     .btn-confirmer:disabled {
-      opacity: .35;
-      border-color: rgba(255,255,255,0.05);
-      background: #0d1624;
+      opacity: .45;
+      border-color: rgba(184,146,74,.15);
+      background: rgba(184,146,74,.18);
       cursor: not-allowed;
     }
     .btn-confirmer:not(:disabled):hover {
-      border-color: var(--bleu-ciel);
-      box-shadow: 0 0 20px rgba(91,174,227,0.2);
+      transform: translateY(-1px);
+      box-shadow: 0 22px 42px rgba(184,146,74,.2);
     }
     .btn-confirmer:not(:disabled):active { transform: scale(.98); }
 

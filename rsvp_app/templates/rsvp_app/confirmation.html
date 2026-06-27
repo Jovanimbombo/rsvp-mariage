@@ -11,152 +11,196 @@
   />
   <style>
     :root {
-      --noir: #080c10; --bleu-nuit: #0a1628; --bleu-ciel: #5baee3;
-      --bleu-clair: #a8d4f0; --or: #c9a84c; --or-clair: #e8cf8a;
-      --blanc: #f7f4ef;
+      --creme:      #fdf8f0;
+      --creme-2:    #f5ede0;
+      --or:         #b8924a;
+      --or-clair:   #d4ac6e;
+      --or-pale:    #ecdfc8;
+      --brun:       #2c1f0e;
+      --brun-doux:  #5c4a32;
+      --texte:      #3a2e22;
+      --texte-doux: #7a6a56;
+      --blanc:      #ffffff;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       min-height: 100dvh;
-      background: var(--noir);
-      background-image: radial-gradient(ellipse at 50% 40%, rgba(91,174,227,.07) 0%, transparent 60%);
+      background: var(--creme);
       font-family: 'Jost', sans-serif;
-      color: var(--blanc);
+      color: var(--brun);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 2rem 1rem;
+    }
+
+    .page-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--blanc);
+      border: 1px solid rgba(184,146,74,.2);
+      border-radius: 24px;
+      box-shadow: 0 30px 70px rgba(44,31,14,.08);
+      padding: 2.2rem 2rem;
+    }
+
+    .page-header {
       text-align: center;
+      margin-bottom: 1.6rem;
     }
-
-    /* Icône centrale animée */
-    .icone-centrale {
-      font-size: 3.5rem;
-      margin-bottom: 1.5rem;
-      animation: zoomIn .7s cubic-bezier(.22,.68,0,1.4) both;
-    }
-    @keyframes zoomIn {
-      from { opacity: 0; transform: scale(.4); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-
-    .trait-or {
+    .page-header .surtitre {
       display: block;
-      width: 50px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--or), transparent);
-      margin: .7rem auto 1rem;
-    }
-
-    h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      font-size: clamp(1.6rem, 6vw, 2.2rem);
-      letter-spacing: .04em;
-      animation: fadeUp .7s ease .2s both;
-    }
-    h1 em { font-style: italic; color: var(--bleu-clair); }
-
-    .sous-titre {
-      font-size: .7rem;
-      letter-spacing: .2em;
+      font-size: .65rem;
+      letter-spacing: .32em;
       text-transform: uppercase;
-      color: rgba(168,212,240,.5);
-      margin-top: .5rem;
-      animation: fadeUp .7s ease .35s both;
+      color: var(--or);
+      margin-bottom: .75rem;
+    }
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      line-height: 1.08;
+      color: var(--brun);
+      margin-bottom: .6rem;
+    }
+    .page-header p {
+      color: var(--texte-doux);
+      font-size: .95rem;
+      line-height: 1.7;
+      max-width: 420px;
+      margin: 0 auto;
     }
 
-    /* Récapitulatif */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(184,146,74,.12);
+      color: var(--brun);
+      border-radius: 999px;
+      padding: .55rem 1rem;
+      font-size: .75rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: .9rem;
+    }
+    .status-badge::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: currentColor;
+      display: inline-block;
+    }
+    .status-badge.present { color: #4b7d44; }
+    .status-badge.absent { color: #a04646; }
+
     .recap {
       margin-top: 2rem;
-      background: linear-gradient(160deg, #0d2040 0%, #060e1a 100%);
-      border: 1px solid rgba(91,174,227,.2);
-      border-radius: 6px;
-      padding: 1.6rem 2rem;
-      width: 100%;
-      max-width: 340px;
-      animation: fadeUp .7s ease .5s both;
+      background: var(--creme-2);
+      border: 1px solid rgba(184,146,74,.18);
+      border-radius: 18px;
+      padding: 1.6rem 1.8rem;
     }
     .recap-ligne {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: .75rem;
       align-items: center;
-      padding: .5rem 0;
-      border-bottom: 1px solid rgba(91,174,227,.08);
-      font-size: .82rem;
+      padding: .9rem 0;
+      border-bottom: 1px solid rgba(184,146,74,.12);
+      font-size: .92rem;
     }
     .recap-ligne:last-child { border-bottom: none; }
-    .recap-ligne .label { color: rgba(168,212,240,.55); font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; }
-    .recap-ligne .valeur { font-family: 'Cormorant Garamond', serif; font-size: .95rem; }
-    .valeur.present { color: #6be08a; }
-    .valeur.absent  { color: #e06b7a; }
+    .label {
+      color: var(--texte-doux);
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .valeur {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .98rem;
+      color: var(--brun);
+      text-align: right;
+    }
+    .valeur.present { color: #4b7d44; }
+    .valeur.absent { color: #a04646; }
 
-    /* Bouton modifier */
     .btn-modifier {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
       margin-top: 1.8rem;
-      padding: .8rem 2rem;
-      font-size: .7rem;
+      padding: 1rem 1.1rem;
+      background: linear-gradient(135deg, var(--or), var(--or-clair));
+      color: var(--blanc);
+      border: none;
+      border-radius: 14px;
+      font-size: .78rem;
+      font-weight: 700;
       letter-spacing: .2em;
       text-transform: uppercase;
-      color: var(--bleu-clair);
-      border: 1px solid rgba(91,174,227,.3);
-      border-radius: 3px;
       text-decoration: none;
-      transition: all .2s ease;
-      animation: fadeUp .7s ease .65s both;
+      transition: transform .2s ease, box-shadow .2s ease;
+      box-shadow: 0 18px 32px rgba(184,146,74,.15);
     }
-    .btn-modifier:hover { background: rgba(91,174,227,.08); border-color: rgba(91,174,227,.6); }
+    .btn-modifier:hover { transform: translateY(-1px); }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @media (max-width: 460px) {
+      .page-card { padding: 1.8rem 1.4rem; }
+      .recap { padding: 1.2rem 1.3rem; }
+      .page-header h1 { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
+  <div class="page-card">
+    <div class="page-header">
+      <span class="surtitre">Confirmation d'invitation</span>
+      <h1>
+        {% if invite.statut_presence == 'present' %}
+          Votre présence est confirmée,<br><em>{{ invite.prenom }}.</em>
+        {% else %}
+          Votre réponse a bien été enregistrée,<br><em>{{ invite.prenom }}.</em>
+        {% endif %}
+      </h1>
+      <p>Merci d’avoir pris le temps de répondre. Nous enregistrons votre choix et préparons l’événement en conséquence.</p>
+    </div>
 
-  <div class="icone-centrale">
-    {% if invite.statut_presence == 'present' %}{% else %}💌{% endif %}
+    <div class="status-badge {% if invite.statut_presence == 'present' %}present{% else %}absent{% endif %}">
+      {% if invite.statut_presence == 'present' %}Présent(e){% else %}Absent(e){% endif %}
+    </div>
+
+    <div class="recap">
+      <div class="recap-ligne">
+        <span class="label">Invité</span>
+        <span class="valeur">{{ invite.prenom }} {{ invite.nom }}</span>
+      </div>
+      <div class="recap-ligne">
+        <span class="label">Statut</span>
+        <span class="valeur {% if invite.statut_presence == 'present' %}present{% else %}absent{% endif %}">
+          {% if invite.statut_presence == 'present' %}Présent(e){% else %}Absent(e){% endif %}
+        </span>
+      </div>
+      {% if invite.choix_boisson %}
+      <div class="recap-ligne">
+        <span class="label">Boisson choisie</span>
+        <span class="valeur">{{ invite.get_choix_boisson_display }}</span>
+      </div>
+      {% endif %}
+      {% if invite.date_reponse %}
+      <div class="recap-ligne">
+        <span class="label">Répondu le</span>
+        <span class="valeur">{{ invite.date_reponse|date:"d/m/Y à H:i" }}</span>
+      </div>
+      {% endif %}
+    </div>
+
+    <a href="{% url 'rsvp' %}" class="btn-modifier">Modifier ma réponse</a>
   </div>
-
-  <h1>
-    {% if invite.statut_presence == 'present' %}
-      À très bientôt,<br><em>{{ invite.prenom }} !</em>
-    {% else %}
-      Nous vous regretterons,<br><em>{{ invite.prenom }}.</em>
-    {% endif %}
-  </h1>
-
-  <span class="trait-or"></span>
-  <p class="sous-titre">Votre réponse a été enregistrée</p>
-
-  <div class="recap">
-    <div class="recap-ligne">
-      <span class="label">Invité</span>
-      <span class="valeur">{{ invite.prenom }} {{ invite.nom }}</span>
-    </div>
-    <div class="recap-ligne">
-      <span class="label">Présence</span>
-      <span class="valeur {{ invite.statut_presence }}">
-        {% if invite.statut_presence == 'present' %}✅ Présent(e){% else %}❌ Absent(e){% endif %}
-      </span>
-    </div>
-    {% if invite.choix_boisson %}
-    <div class="recap-ligne">
-      <span class="label">Boisson</span>
-      <span class="valeur">{{ invite.get_choix_boisson_display }}</span>
-    </div>
-    {% endif %}
-    {% if invite.date_reponse %}
-    <div class="recap-ligne">
-      <span class="label">Répondu le</span>
-      <span class="valeur">{{ invite.date_reponse|date:"d/m/Y à H:i" }}</span>
-    </div>
-    {% endif %}
-  </div>
-
-  <a href="{% url 'rsvp' %}" class="btn-modifier">Modifier ma réponse</a>
-
 </body>
 </html>
